@@ -65,14 +65,14 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 		
 		if(position == FRAGMENT_POS_EXAMPLE) {
 			if(mExampleFragment == null) {
-				mExampleFragment = new OptionsFragment(mContext, mFragmentListener, mHandler);
+				mExampleFragment = new MainFragment(mContext, mFragmentListener, mHandler);
 				//needToSetArguments = true;
 			}
 			fragment = mExampleFragment;
 			
 		} else if(position == FRAGMENT_POS_SETTINGS) {
 			if(mLLSettingsFragment == null) {
-				mLLSettingsFragment = new LLSettingsFragment(mContext, mFragmentListener);
+				mLLSettingsFragment = new SettingsFragment(mContext, mFragmentListener);
 				//needToSetArguments = true;
 			}
 			fragment = mLLSettingsFragment;

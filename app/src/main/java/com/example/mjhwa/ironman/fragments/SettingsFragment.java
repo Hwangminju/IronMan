@@ -30,7 +30,7 @@ import android.widget.TextView;
 import com.example.mjhwa.ironman.R;
 import com.example.mjhwa.ironman.utils.AppSettings;
 
-public class LLSettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment {
 
 	private Context mContext = null;
 	private IFragmentListener mFragmentListener = null;
@@ -39,11 +39,11 @@ public class LLSettingsFragment extends Fragment {
 	private TextView mTextIot;
 	
 
-	public LLSettingsFragment(Context c, IFragmentListener l) {
+	public SettingsFragment(Context c, IFragmentListener l) {
 		mContext = c;
 		mFragmentListener = l;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		

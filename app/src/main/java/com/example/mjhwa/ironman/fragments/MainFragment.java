@@ -29,23 +29,24 @@ import android.widget.ImageButton;
 import com.example.mjhwa.ironman.R;
 import com.example.mjhwa.ironman.views.LearnActivity;
 
-public class OptionsFragment extends Fragment implements View.OnClickListener {
+public class MainFragment extends Fragment implements View.OnClickListener {
 
 	private Context mContext = null;
 	private IFragmentListener mFragmentListener = null;
 	private Handler mActivityHandler = null;
 
-	ImageButton hand1;
-	ImageButton hand2;
-	ImageButton hand3;
-	ImageButton hand4;
+	ImageButton hand1, hand2, hand3, hand4, hand5;
 
 	Intent intent;
 
-	public OptionsFragment(Context c, IFragmentListener l, Handler h) {
+	public MainFragment(Context c, IFragmentListener l, Handler h) {
 		mContext = c;
 		mFragmentListener = l;
 		mActivityHandler = h;
+	}
+
+	public MainFragment() {
+
 	}
 
 	@Override

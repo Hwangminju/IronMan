@@ -29,10 +29,10 @@
             backward-compatibility can go here.
         -->
     </style>
-    <style name="AppLearnTheme" parent="Theme.AppCompat.DayNight.DarkActionBar"></style>
+    <style name="ActionbarTheme" parent="android:Theme.Holo.Light.DarkActionBar"></style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme" parent="android:Theme.Holo.Light.NoActionBar">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
