@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SignActivity extends Activity implements View.OnClickListener {
 
     private static final String TAG = "EmailPassword";
@@ -73,6 +76,16 @@ public class SignActivity extends Activity implements View.OnClickListener {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
+        } else if(!isValidEmail(email)) {
+            Log.e(TAG, "계정 생성: 잘못된 이메일 형식입니다.");
+            Toast.makeText(SignActivity.this, "잘못된 이메일 형식입니다.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        } else if (isValidPasswd(password)){
+            Log.e(TAG, "게정 생성: 잘못된 비밀번호 형식입니다.");
+            Toast.makeText(SignActivity.this, "잘못된 비밀번호 형식입니다.",
+                    Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // showProgressDialog();
@@ -93,7 +106,7 @@ public class SignActivity extends Activity implements View.OnClickListener {
                             finish();
                         } else {
                             // 회원가입 실패
-                            Log.w(TAG, "회원가입 실패", task.getException());
+                            Log.w(TAG, "회원가입 실패 : 이메일 형식 / 비밀번호 (최소 6자리)를 지켜주세요.", task.getException());
                             Toast.makeText(SignActivity.this, "회원가입 실패",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
@@ -151,6 +164,25 @@ public class SignActivity extends Activity implements View.OnClickListener {
     private void signOut() {
         mAuth.signOut();
         updateUI(null);
+    }
+
+    private boolean isValidPasswd(String target) {
+        Pattern p = Pattern.compile("(^.*(?=.{6,100})(?=.*[0-9])(?=.*[a-zA-Z]).*$)");
+
+        Matcher m = p.matcher(target);
+        if (m.find() && !target.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private boolean isValidEmail(String target) {
+        if (target == null || TextUtils.isEmpty(target)) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
     }
 
     private boolean validateForm() {

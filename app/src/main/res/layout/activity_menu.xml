@@ -90,7 +90,7 @@
             android:text="@string/normal_mode"
             android:textColor="@color/red1"
             android:typeface="sans"
-            android:gravity="center"
+            android:gravity="right|center_vertical"
             android:textSize="45sp"
             android:drawableStart="@drawable/normal"
             android:clickable="true"
@@ -108,12 +108,30 @@
             android:text="@string/barista_mode"
             android:textColor="@color/red1"
             android:typeface="sans"
-            android:gravity="center"
+            android:gravity="right|center_vertical"
             android:textSize="45sp"
             android:drawableStart="@drawable/barista"
             android:clickable="true"
             android:background="@drawable/button_style"
             android:id="@+id/btBarista"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/activity_vertical_margin"
+            android:paddingHorizontal="40dp"
+            android:layout_gravity="center"
+            android:text="@string/settings"
+            android:textColor="@color/red1"
+            android:typeface="sans"
+            android:textSize="40sp"
+            android:gravity="right"
+            android:drawableStart="@drawable/settings"
+            android:clickable="true"
+            android:background="@drawable/button_style"
+            android:id="@+id/btSettings"/>
 
     </LinearLayout>
 

@@ -5,12 +5,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,8 +22,10 @@ import android.widget.Toast;
 import com.example.mjhwa.ironman.R;
 import com.example.mjhwa.ironman.bluetooth.DeviceListActivity;
 import com.example.mjhwa.ironman.service.BTCTemplateService;
+import com.example.mjhwa.ironman.utils.AppSettings;
 import com.example.mjhwa.ironman.utils.Constants;
 import com.example.mjhwa.ironman.utils.Logs;
+import com.example.mjhwa.ironman.utils.RecycleUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -30,7 +34,7 @@ import java.util.TimerTask;
 
 import static com.example.mjhwa.ironman.fragments.FragmentAdapter.TAG;
 
-public class MenuActivity extends Activity implements View.OnClickListener {
+public class MenuActivity extends Activity {
 
     // 이메일, 비밀번호 로그인 모듈 변수
     private FirebaseAuth mAuth;
@@ -47,7 +51,7 @@ public class MenuActivity extends Activity implements View.OnClickListener {
     // Context, System
     private Context mContext;
     private BTCTemplateService mService;
-    private MainActivity.ActivityHandler mActivityHandler;
+    private MenuActivity.ActivityHandler mActivityHandler;
 
     private ImageView bleImage = null;
     private TextView bleStatus = null;
@@ -106,11 +110,22 @@ public class MenuActivity extends Activity implements View.OnClickListener {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.scan_device:
-                    if (blue)
-                    Intent intent = new Intent(MenuActivity.this, DeviceListActivity.class);
+                    // DeviceListActivity로 넘어가서 장치 스캔 시작
+                    doScan();
+                case R.id.btNormal:
+                    startActivity(new Intent(MenuActivity.this, NormalActivity.class));
+                    Toast.makeText(MenuActivity.this, "일반 모드를 시작합니다.", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.btBarista:
+                    startActivity(new Intent(MenuActivity.this, BaristaActivity.class));
+                    Toast.makeText(MenuActivity.this, "바리스타 모드를 시작합니다.", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
             }
+
         }
-    }
+    };
 
     /**
      * Service connection
@@ -131,6 +146,51 @@ public class MenuActivity extends Activity implements View.OnClickListener {
             mService = null;
         }
     };
+
+    /**
+     * Initialization / Finalization
+     */
+    private void initialize() {
+        Logs.d(TAG, "# Activity - initialize()");
+
+        // Use this check to determine whether BLE is supported on the device. Then
+        // you can selectively disable BLE-related features.
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            Toast.makeText(this, R.string.bt_ble_not_supported, Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        mService.setupService(mActivityHandler);
+
+        // If BT is not on, request that it be enabled.
+        // RetroWatchService.setupBT() will then be called during onActivityResult
+        if(!mService.isBluetoothEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, Constants.REQUEST_ENABLE_BT);
+        }
+
+        // Load activity reports and display
+        if(mRefreshTimer != null) {
+            mRefreshTimer.cancel();
+        }
+
+        // Use below timer if you want scheduled job
+        //mRefreshTimer = new Timer();
+        //mRefreshTimer.schedule(new RefreshTimerTask(), 5*1000);
+    }
+
+    private void finalizeActivity() {
+        Logs.d(TAG, "# Activity - finalizeActivity()");
+
+        if (!AppSettings.getBgService()) {
+            doStopService();
+        } else {
+        }
+
+        // Clean used resources
+        RecycleUtils.recursiveRecycle(getWindow().getDecorView());
+        System.gc();
+    }
 
     /**
      * Start service if it's not running
@@ -216,43 +276,39 @@ public class MenuActivity extends Activity implements View.OnClickListener {
             switch(msg.what) {
                 // 블루투스 연결 상태에 따라 UI 변경
                 case Constants.MESSAGE_BT_STATE_INITIALIZED:
-                    bleStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-                            getResources().getString(R.string.bt_state_init));
-                    bleImage.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_invisible));
+                    bleStatus.setText(getResources().getString(R.string.ble_disconnected));
+                    bleImage.setImageDrawable(getResources().getDrawable(R.drawable.no_bluetooth));
                     break;
                 case Constants.MESSAGE_BT_STATE_LISTENING:
-                    mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-                            getResources().getString(R.string.bt_state_wait));
-                    mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_invisible));
+                    bleStatus.setText(getResources().getString(R.string.ble_wait));
+                    bleImage.setImageDrawable(getResources().getDrawable(R.drawable.no_bluetooth));
                     break;
                 case Constants.MESSAGE_BT_STATE_CONNECTING:
-                    mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-                            getResources().getString(R.string.bt_state_connect));
-                    mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_away));
+                    bleStatus.setText(getResources().getString(R.string.ble_connecting));
+                    bleImage.setImageDrawable(getResources().getDrawable(R.drawable.ing_bluetooth));
                     break;
                 case Constants.MESSAGE_BT_STATE_CONNECTED:
                     if(mService != null) {
                         String deviceName = mService.getDeviceName();
                         if(deviceName != null) {
-                            mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-                                    getResources().getString(R.string.bt_state_connected) + " " + deviceName);
-                            mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_online));
+                            bleStatus.setText(getResources().getString(R.string.ble_connected) + " : " + deviceName);
+                            Toast.makeText(MenuActivity.this, deviceName + "에 연결 성공", Toast.LENGTH_SHORT).show();
+                            bleImage.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth));
                         } else {
-                            mTextStatus.setText(getResources().getString(R.string.bt_title) + ": " +
-                                    getResources().getString(R.string.bt_state_connected) + " no name");
-                            mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_online));
+                            bleStatus.setText(getResources().getString(R.string.ble_connected) + " : no name");
+                            bleImage.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth));
                         }
                     }
                     break;
                 case Constants.MESSAGE_BT_STATE_ERROR:
-                    mTextStatus.setText(getResources().getString(R.string.bt_state_error));
-                    mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_busy));
+                    bleStatus.setText(getResources().getString(R.string.ble_error));
+                    bleImage.setImageDrawable(getResources().getDrawable(R.drawable.disabled));
                     break;
 
                 // BT Command status
                 case Constants.MESSAGE_CMD_ERROR_NOT_CONNECTED:
-                    mTextStatus.setText(getResources().getString(R.string.bt_cmd_sending_error));
-                    mImageBT.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_busy));
+                    bleStatus.setText(getResources().getString(R.string.ble_cmd_sending_error));
+                    bleImage.setImageDrawable(getResources().getDrawable(R.drawable.disabled));
                     break;
 
                 ///////////////////////////////////////////////

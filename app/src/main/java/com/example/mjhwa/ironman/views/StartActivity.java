@@ -23,7 +23,7 @@ public class StartActivity extends Activity {
             @Override
             public void run() {
                 // TODO
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SignActivity.class);
                 startActivity(intent);
 
             }
