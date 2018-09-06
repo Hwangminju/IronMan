@@ -30,7 +30,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_marginTop="20dp"
             android:orientation="vertical">
@@ -41,40 +41,26 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/hand1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:src="@drawable/thumbs_up" />
 
-                    <ImageButton
-                        android:id="@+id/hand1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:padding="0dp"
-                        android:src="@drawable/thumbs_up" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/hand2"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:src="@drawable/ok" />
 
-                    <ImageButton
-                        android:id="@+id/hand2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:padding="0dp"
-                        android:src="@drawable/ok" />
-                </LinearLayout>
             </LinearLayout>
 
             <View
@@ -87,39 +73,26 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/hand3"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:src="@drawable/victory" />
 
-                    <ImageButton
-                        android:id="@+id/hand3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:padding="0dp"
-                        android:src="@drawable/victory" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/hand4"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:src="@drawable/tap" />
 
-                    <ImageButton
-                        android:id="@+id/hand4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:padding="0dp"
-                        android:src="@drawable/tap" />
-                </LinearLayout>
             </LinearLayout>
 
             <View
@@ -132,39 +105,26 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/hand5"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:src="@drawable/hand_3" />
 
-                    <ImageButton
-                        android:id="@+id/hand5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:padding="0dp"
-                        android:src="@drawable/hand_3" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/hand6"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:src="@drawable/hand_4" />
 
-                    <ImageButton
-                        android:id="@+id/hand6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:padding="0dp"
-                        android:src="@drawable/hand_4" />
-                </LinearLayout>
             </LinearLayout>
 
             <View
@@ -177,40 +137,32 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+
+                <ImageButton
+                    android:id="@+id/hand7"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:src="@drawable/fist" />
 
-                    <ImageButton
-                        android:id="@+id/hand7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:padding="0dp"
-                        android:src="@drawable/fist" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/hand8"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:src="@drawable/pointing_up" />
 
-                    <ImageButton
-                        android:id="@+id/hand8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:padding="0dp"
-                        android:src="@drawable/pointing_up" />
-                </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
 
         </LinearLayout>
     </ScrollView>

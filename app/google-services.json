@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "235609674569",
+    "firebase_url": "https://ironman-mj.firebaseio.com",
+    "project_id": "ironman-mj",
+    "storage_bucket": "ironman-mj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235609674569:android:995d19e2f8066564",
+        "android_client_info": {
+          "package_name": "com.example.mjhwa.ironman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "235609674569-4389532q8fc0j33lvajjd764huc4opue.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mjhwa.ironman",
+            "certificate_hash": "2e9486f13e5fc8c652c9431b2e1f7c4fcce8fb4c"
+          }
+        },
+        {
+          "client_id": "235609674569-sj5817mi2rlhttjpecpbds30eve89f0i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe7x2Y4f6cE9ai1HrHyHUSjHprct28uwg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "235609674569-sj5817mi2rlhttjpecpbds30eve89f0i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

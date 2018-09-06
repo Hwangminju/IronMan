@@ -35,7 +35,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 	private IFragmentListener mFragmentListener = null;
 	private Handler mActivityHandler = null;
 
-	ImageButton hand1, hand2, hand3, hand4, hand5;
+	ImageButton hand1, hand2, hand3, hand4, hand5, hand6, hand7, hand8;
 
 	Intent intent;
 
@@ -51,21 +51,33 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+		View v = inflater.inflate(R.layout.fragment_main, container, false);
 
-		hand1 = (ImageButton) rootView.findViewById(R.id.hand1);
+		hand1 = (ImageButton) v.findViewById(R.id.hand1);
 		hand1.setOnClickListener(this);
 
-		hand2 = (ImageButton) rootView.findViewById(R.id.hand2);
+		hand2 = (ImageButton) v.findViewById(R.id.hand2);
 		hand2.setOnClickListener(this);
 
-		hand3 = (ImageButton) rootView.findViewById(R.id.hand3);
+		hand3 = (ImageButton) v.findViewById(R.id.hand3);
 		hand3.setOnClickListener(this);
 
-		hand4 = (ImageButton) rootView.findViewById(R.id.hand4);
+		hand4 = (ImageButton) v.findViewById(R.id.hand4);
 		hand4.setOnClickListener(this);
+
+		hand5 = (ImageButton) v.findViewById(R.id.hand5);
+		hand5.setOnClickListener(this);
+
+		hand6 = (ImageButton) v.findViewById(R.id.hand6);
+		hand6.setOnClickListener(this);
+
+		hand7 = (ImageButton) v.findViewById(R.id.hand7);
+		hand7.setOnClickListener(this);
+
+		hand8 = (ImageButton) v.findViewById(R.id.hand8);
+		hand8.setOnClickListener(this);
 		
-		return rootView;
+		return v;
 	}
 	
 	@Override
@@ -85,9 +97,22 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 			case R.id.hand4:
 				no = 4;
 				break;
+			case R.id.hand5:
+				no = 5;
+				break;
+			case R.id.hand6:
+				no = 6;
+				break;
+			case R.id.hand7:
+				no = 7;
+				break;
+			case R.id.hand8:
+				no = 8;
+				break;
 			default:
 				break;
 		}
+
 		intent.putExtra("NO",no);
 		startActivity(intent);
 	}
