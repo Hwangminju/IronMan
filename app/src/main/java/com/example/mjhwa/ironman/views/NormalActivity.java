@@ -1,5 +1,6 @@
 package com.example.mjhwa.ironman.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -53,10 +54,42 @@ public class NormalActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        int no = 0;
+        Intent intent = new Intent(v.getContext(), LearnActivity.class);
+
         switch (v.getId()) {
             case R.id.norm1:
-
+                no = 1;
+                break;
+            case R.id.norm2:
+                no = 2;
+                break;
+            case R.id.norm3:
+                no = 3;
+                break;
+            case R.id.norm4:
+                no = 4;
+                break;
+            case R.id.norm5:
+                no = 5;
+                break;
+            case R.id.norm6:
+                no = 6;
+                break;
+            case R.id.norm7:
+                no = 7;
+                break;
+            case R.id.norm8:
+                no = 8;
+                break;
+            case R.id.norm9:
+                no = 9;
+                break;
+            default:
+                break;
         }
+        intent.putExtra("NO",no);
+        startActivity(intent);
     }
 
 }

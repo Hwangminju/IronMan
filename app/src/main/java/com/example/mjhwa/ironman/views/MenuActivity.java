@@ -112,6 +112,7 @@ public class MenuActivity extends Activity {
                 case R.id.scan_device:
                     // DeviceListActivity로 넘어가서 장치 스캔 시작
                     doScan();
+                    break;
                 case R.id.btNormal:
                     startActivity(new Intent(MenuActivity.this, NormalActivity.class));
                     Toast.makeText(MenuActivity.this, "일반 모드를 시작합니다.", Toast.LENGTH_SHORT).show();

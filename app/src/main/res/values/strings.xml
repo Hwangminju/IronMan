@@ -43,7 +43,7 @@
     <string name="unknown_characteristic">Unknown characteristic</string>
     <string name="unknown_service">Unknown service</string>
 
-    <!-- 러닝 모드 프래그먼트 -->
+    <!-- 러닝 모드 -->
     <string name="text_gesture">Gesture Fragment</string>
     <string name="text_record">Record Fragment</string>
 
@@ -53,6 +53,9 @@
     <string name="normal_mode">Normal</string>
     <string name="barista_mode">Barista</string>
     <string name="settings">Settings</string>
+
+    <string name="norm1">5초 동안 검지,중지,약지를 편다는 생각으로 근육을 움직이세요.</string>
+    <string name="norm2">5초 동안 엄지,검지,중지를 편다는 생각으로 근육을 움직이세요.</string>
 
     <!-- Menu items -->
     <string name="menu_connect">Connect</string>

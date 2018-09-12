@@ -1,5 +1,6 @@
 package com.example.mjhwa.ironman.views;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.mjhwa.ironman.R;
 
-public class LearnActivity extends AppCompatActivity {
+public class LearnActivity extends Activity {
 
     Intent intent;
     ImageView pic;
@@ -30,27 +31,27 @@ public class LearnActivity extends AppCompatActivity {
 
         switch(getNo) { // intent로 받아온 동작 num case
             case 1:
-                pic.setImageResource(R.drawable.thumbs_up);
-                name.setText("엄지 올리기");
-                guide.setText("5초 동안 엄지를 올린다는 생각으로 근육을 움직이세요.");
+                pic.setImageResource(R.drawable.norm1);
+                name.setText("검지,중지,약지 펴기");
+                guide.setText(R.string.norm1);
                 guide.setGravity(Gravity.CENTER);
                 break;
             case 2:
-                pic.setImageResource(R.drawable.ok);
-                name.setText("OK 동작");
-                guide.setText("5초 동안 엄지와 검지를 동그랗게 붙인다는 생각으로 근육을 움직이세요.");
+                pic.setImageResource(R.drawable.norm2);
+                name.setText("엄지,검지,중지 펴기");
+                guide.setText(R.string.norm2);
                 guide.setGravity(Gravity.CENTER);
                 break;
             case 3:
-                pic.setImageResource(R.drawable.victory);
-                name.setText("V자 동작");
-                guide.setText("엄지와 중지만 펴서 V자를 그린다는 생각으로 5초 동안 근육을 움직이세요.");
+                pic.setImageResource(R.drawable.norm3);
+                name.setText("새끼 손가락 펴기");
+                guide.setText("5초 동안 새끼 손가락만 편다는 생각으로 근육을 움직이세요.");
                 guide.setGravity(Gravity.CENTER);
                 break;
             case 4:
                 pic.setImageResource(R.drawable.tap);
-                name.setText("검지 펴기");
-                guide.setText("검지만 펴고 나머지 손가락들은 접어 준다는 생각으로, 5초 동안 근육을 움직이세요.");
+                name.setText("엄지와 새끼 손가락 펴기");
+                guide.setText("5초 동안 엄지와 새끼 손가락만 편다는 생각으로 근육을 움직이세요.");
                 guide.setGravity(Gravity.CENTER);
                 break;
             default:
