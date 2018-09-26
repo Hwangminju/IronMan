@@ -16,6 +16,10 @@
 
 package com.example.mjhwa.ironman.service;
 
+import java.util.List;
+
+import com.example.mjhwa.ironman.utils.AppSettings;
+
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -25,15 +29,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 
-
-import com.example.mjhwa.ironman.utils.AppSettings;
-
-import java.util.List;
-
 public class ServiceMonitoring {
-	
+
 	private static long SERVICE_RESTART_INTERVAL = 60*1000;
-	
+
 
 	/**
 	 * Check if specified service is running or not
@@ -60,7 +59,7 @@ public class ServiceMonitoring {
 		}
 		return isRunning;
 	}
-	
+
 	/**
 	 * Start service monitoring to recover from unintended termination
 	 * @param context
@@ -82,8 +81,8 @@ public class ServiceMonitoring {
 		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
 		am.cancel(pi);
 	}
-	
-	
+
+
 	/**
 	 *	Broadcast receiver
 	 */
@@ -91,7 +90,7 @@ public class ServiceMonitoring {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// Logs.d("# Monitoring service");
-			
+
 			// Check settings value
 			AppSettings.initializeAppSettings(context);
 			if(!AppSettings.getBgService()) {
@@ -104,5 +103,5 @@ public class ServiceMonitoring {
 			}
 		}
 	}
-	
+
 }

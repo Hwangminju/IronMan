@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:design="http://schemas.android.com/apk/res-auto"
@@ -16,15 +16,13 @@
         android:layout_height="wrap_content"
         android:text="학습하려는 손동작을 선택해 주세요."
         android:textSize="20dp"
-        android:textColor="@color/red1"
         android:gravity="center"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/round_shape"
         android:layout_marginVertical="5dp"
-        android:paddingVertical="10dp">
+        android:layout_below="@id/tv2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,130 +30,162 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <Button
+                android:id="@+id/norm1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/norm1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:padding="0dp"
-                    android:src="@drawable/norm1" />
-
-                <ImageButton
-                    android:id="@+id/norm2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:padding="0dp"
-                    android:src="@drawable/norm2" />
-
-                <ImageButton
-                    android:id="@+id/norm3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:padding="0dp"
-                    android:src="@drawable/norm3" />
-
-            </LinearLayout>
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm1"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt1" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                android:layout_height="5dp" />
 
-            <LinearLayout
+            <Button
+                android:id="@+id/norm2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/norm4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:padding="0dp"
-                    android:src="@drawable/norm4" />
-
-                <ImageButton
-                    android:id="@+id/norm5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="0dp"
-                    android:src="@drawable/norm5" />
-
-                <ImageButton
-                    android:id="@+id/norm6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:padding="0dp"
-                    android:src="@drawable/norm6" />
-
-            </LinearLayout>
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm2"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt2" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                android:layout_height="5dp" />
 
-            <LinearLayout
+            <Button
+                android:id="@+id/norm3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/norm7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="0dp"
-                    android:src="@drawable/norm7" />
-
-                <ImageButton
-                    android:id="@+id/norm8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:padding="0dp"
-                    android:src="@drawable/norm8" />
-
-                <ImageButton
-                    android:id="@+id/norm9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:padding="0dp"
-                    android:src="@drawable/norm9" />
-
-            </LinearLayout>
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm3"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt3" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp" />
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm4"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt4" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm5"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt5" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm6"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt6" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm7"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt7" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm8"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt8" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm9"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt9" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm9"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt9" />
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</RelativeLayout>

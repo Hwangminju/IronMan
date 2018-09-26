@@ -16,11 +16,6 @@
 
 package com.example.mjhwa.ironman.utils;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,74 +25,84 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Utils {
-	private Context mContext;
-	
-	private static final String TAG = "Utils";
-	
-	public Utils(Context c) {
-		if(mContext == null) {
-			mContext = c;
-			initialize();
-		}
-	}
-	
-	
-	private void initialize() {
-	}
-	
-	
-	//============================================================
-	// Directory, File handling
-	//============================================================
-	
-    public static void initFileDirectory(String path)
-	{
-		File directory = new File(path);
-		if( !directory.exists() ) {
-			directory.mkdirs();
-		}
-	}
-	
-	public static void deleteDirectory(String path) {
-		if(path==null) return;
-		if(Utils.isFileExist(new File(path))) {
-			deleteFileDirRecursive(path);
-		}
-	}
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 
-	public static void deleteFileDirRecursive(String path) {
-		File file = new File(path);
-		File[] childFileList = file.listFiles();
-		for(File childFile : childFileList)
-		{
-			if(childFile.isDirectory()) {
-				deleteFileDirRecursive(childFile.getAbsolutePath());     //하위 디렉토리 루프 
-			}
-			else {
-				childFile.delete();    //하위 파일삭제
-			}
-		}
-		file.delete();    //root 삭제 
-	}
-	
-	public static boolean checkFileExists(String directory, String filename)
-	{
-		if(directory==null || filename==null)
-			return false;
-		File kFile = new File(directory+"/"+filename);
-		if(kFile != null) {
-			return kFile.exists();
-		}
-		return false;
-	}
-	
-	public static File makeDirectory(String dir_path){
+import com.example.mjhwa.ironman.R;
+
+public class Utils {
+    private Context mContext;
+
+    private static final String TAG = "Utils";
+
+    public Utils(Context c) {
+        if(mContext == null) {
+            mContext = c;
+            initialize();
+        }
+    }
+
+
+    private void initialize() {
+    }
+
+
+    //============================================================
+    // Directory, File handling
+    //============================================================
+
+    public static void initFileDirectory(String path)
+    {
+        File directory = new File(path);
+        if( !directory.exists() ) {
+            directory.mkdirs();
+        }
+    }
+
+    public static void deleteDirectory(String path) {
+        if(path==null) return;
+        if(Utils.isFileExist(new File(path))) {
+            deleteFileDirRecursive(path);
+        }
+    }
+
+    public static void deleteFileDirRecursive(String path) {
+        File file = new File(path);
+        File[] childFileList = file.listFiles();
+        for(File childFile : childFileList)
+        {
+            if(childFile.isDirectory()) {
+                deleteFileDirRecursive(childFile.getAbsolutePath());     //하위 디렉토리 루프
+            }
+            else {
+                childFile.delete();    //하위 파일삭제
+            }
+        }
+        file.delete();    //root 삭제
+    }
+
+    public static boolean checkFileExists(String directory, String filename)
+    {
+        if(directory==null || filename==null)
+            return false;
+        File kFile = new File(directory+"/"+filename);
+        if(kFile != null) {
+            return kFile.exists();
+        }
+        return false;
+    }
+
+    public static File makeDirectory(String dir_path){
         File dir = new File(dir_path);
         if (!dir.exists())
         {
@@ -106,10 +111,10 @@ public class Utils {
         }else{
             Log.i(TAG , "dir.exists");
         }
- 
+
         return dir;
     }
- 
+
     public static File makeFile(File dir , String file_path){
         File file = null;
         boolean isSuccess = false;
@@ -130,11 +135,11 @@ public class Utils {
         }
         return file;
     }
- 
+
     public static String getAbsolutePath(File file){
         return ""+file.getAbsolutePath();
     }
- 
+
     public static boolean deleteFile(File file){
         boolean result;
         if(file!=null&&file.exists()){
@@ -145,7 +150,7 @@ public class Utils {
         }
         return result;
     }
- 
+
     public static boolean isFile(File file){
         boolean result;
         if(file!=null&&file.exists()&&file.isFile()){
@@ -155,7 +160,7 @@ public class Utils {
         }
         return result;
     }
- 
+
     public static boolean isDirectory(File dir){
         boolean result;
         if(dir!=null&&dir.isDirectory()){
@@ -165,7 +170,7 @@ public class Utils {
         }
         return result;
     }
- 
+
     public static boolean isFileExist(File file){
         boolean result;
         if(file!=null&&file.exists()){
@@ -175,7 +180,7 @@ public class Utils {
         }
         return result;
     }
-     
+
     public static boolean reNameFile(File file , File new_name){
         boolean result;
         if(file!=null&&file.exists()&&file.renameTo(new_name)){
@@ -185,17 +190,17 @@ public class Utils {
         }
         return result;
     }
-     
+
     public static String[] getList(File dir){
         if(dir!=null&&dir.exists())
             return dir.list();
         return null;
     }
- 
+
     public static boolean writeFile(File file , byte[] file_content){
         boolean result;
         FileOutputStream fos;
-        
+
         if(file!=null&&file_content!=null){
             try {
                 fos = new FileOutputStream(file);
@@ -211,16 +216,16 @@ public class Utils {
             }
             result = true;
         }else{
-        	Logs.d(TAG, "##### writeFile :: file is null or file does not exists or content is null ");
+            Logs.d(TAG, "##### writeFile :: file is null or file does not exists or content is null ");
             result = false;
         }
         return result;
     }
- 
+
     public static String readFile(File file){
-    	StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         int readcount=0;
-        
+
         if( file!=null && file.exists() ){
             try {
                 FileInputStream fis = new FileInputStream(file);
@@ -238,11 +243,11 @@ public class Utils {
                 Logs.d(TAG, "##### writeFile :: Exception while FILE IO ");
             }
         } else {
-        	Logs.d(TAG, "##### writeFile :: file is null or file does not exists or content is null ");
+            Logs.d(TAG, "##### writeFile :: file is null or file does not exists or content is null ");
         }
         return sb.toString();
     }
-     
+
     public static boolean copyFile(File file , String save_file){
         boolean result;
         if(file!=null&&file.exists()){
@@ -265,42 +270,42 @@ public class Utils {
         }
         return result;
     }
-     
-	//============================================================
-	// URL, File name
-	//============================================================
-	
-	// url 파일이름 추출 (with extension)
-	public static String convertUrlToFileName(String url)
-	{
-		String name = new File(url).getName();
-		return name;
-	}
-	
-	// TODO: url 파일이름 추출 (without extension)
-	public static String convertUrlToFileNameWithoutExt(String url)
-	{
-		String name = new File(url).getName();
-		// TODO
-		return name;
-	}
-	
-	
-	public static final String REG_EXP_IMAGE_URL = "(?i)http://[a-zA-Z0-9_.\\-%&=?!:;@\"'/]*(?i)(.gif|.jpg|.png|.jpeg)";
-	
+
+    //============================================================
+    // URL, File name
+    //============================================================
+
+    // url 파일이름 추출 (with extension)
+    public static String convertUrlToFileName(String url)
+    {
+        String name = new File(url).getName();
+        return name;
+    }
+
+    // TODO: url 파일이름 추출 (without extension)
+    public static String convertUrlToFileNameWithoutExt(String url)
+    {
+        String name = new File(url).getName();
+        // TODO
+        return name;
+    }
+
+
+    public static final String REG_EXP_IMAGE_URL = "(?i)http://[a-zA-Z0-9_.\\-%&=?!:;@\"'/]*(?i)(.gif|.jpg|.png|.jpeg)";
+
     // TODO: Not working correctly
     public static List<String> getImageURL(String str) {
-		Pattern nonValidPattern = Pattern.compile(REG_EXP_IMAGE_URL);
+        Pattern nonValidPattern = Pattern.compile(REG_EXP_IMAGE_URL);
 
-		List<String> result = new ArrayList<String>();
-		Matcher matcher = nonValidPattern.matcher(str);
-		while (matcher.find()) {
-			result.add(matcher.group(0));
-			break;
-		}
-		return result;
-	}
-	
+        List<String> result = new ArrayList<String>();
+        Matcher matcher = nonValidPattern.matcher(str);
+        while (matcher.find()) {
+            result.add(matcher.group(0));
+            break;
+        }
+        return result;
+    }
+
     public static Comparator<Object> KeyStringSort = new Comparator<Object>() {
         public int compare(Object s1, Object s2) {
             String ss1 = (String)s1;
@@ -308,37 +313,37 @@ public class Utils {
             return (-1) * ss2.compareTo(ss1);
         }
     };
-    
+
     public static Bitmap getResizedBitmapFromFile(String filePath, int screenW, int screenH, float resizeRatio)
-	{
-		//----- Load image as small as possible to reduce memory overhead
+    {
+        //----- Load image as small as possible to reduce memory overhead
         Bitmap pic = null;
-        try 
+        try
         {
-        	File tempFile = new File(filePath);
-        	if( isFileExist(tempFile) == false ) return null;
-        	
+            File tempFile = new File(filePath);
+            if( isFileExist(tempFile) == false ) return null;
+
             // Decode image size
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
-            
+
             InputStream is = new FileInputStream(filePath);
             BitmapFactory.decodeStream(is, null, options);
-    		is.close();
+            is.close();
 
-    		// Target bitmap size
-    		int smallerW = (screenW > screenH ? screenH : screenW);	// Get screen width
-    		int bitmapW = options.outWidth;			// image size Width
-    		int bitmapH = options.outHeight;		// image size Height
-    		int imageW = (int)( (float)smallerW * resizeRatio );	// Target bitmap width : Resize image according to resize ratio
-    		int imageH = (imageW * bitmapH / bitmapW);	// Target bitmap height
-            
+            // Target bitmap size
+            int smallerW = (screenW > screenH ? screenH : screenW);	// Get screen width
+            int bitmapW = options.outWidth;			// image size Width
+            int bitmapH = options.outHeight;		// image size Height
+            int imageW = (int)( (float)smallerW * resizeRatio );	// Target bitmap width : Resize image according to resize ratio
+            int imageH = (imageW * bitmapH / bitmapW);	// Target bitmap height
+
             int scale = 1;
             int scaleW = bitmapW / imageW;
 //            int scaleH = bitmapH / imageH;
             while( scaleW / 2 >= 1 ) {
-            	scale = scale * 2;
-            	scaleW = scaleW / 2;
+                scale = scale * 2;
+                scaleW = scaleW / 2;
             }
 
             if (scale > 1) {
@@ -346,7 +351,7 @@ public class Utils {
                 // larger than target
                 options = new BitmapFactory.Options();
                 options.inSampleSize = scale;
-                
+
                 InputStream is2 = new FileInputStream(filePath);
                 pic = BitmapFactory.decodeStream(is2, null, options);
                 is2.close();
@@ -358,7 +363,7 @@ public class Utils {
 
                 System.gc();
             } else {
-            	InputStream is2 = new FileInputStream(filePath);
+                InputStream is2 = new FileInputStream(filePath);
                 pic = BitmapFactory.decodeStream(is2);
                 is2.close();
             }
@@ -366,19 +371,19 @@ public class Utils {
         } catch (Exception e) {
             pic = null;
         }
-        return pic;		
-	}
+        return pic;
+    }
 
-    
-	//============================================================
-	// Regular expression
-	//============================================================
-	
-	public static String removeSpecialChars(String str){
-		String match = "[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]";
-		str =str.replaceAll(match, " ");
-		return str;
-	}
-	
-	
+
+    //============================================================
+    // Regular expression
+    //============================================================
+
+    public static String removeSpecialChars(String str){
+        String match = "[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]";
+        str =str.replaceAll(match, " ");
+        return str;
+    }
+
+
 }

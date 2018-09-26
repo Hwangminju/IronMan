@@ -16,37 +16,37 @@
 
 package com.example.mjhwa.ironman.bluetooth;
 
+import com.example.mjhwa.ironman.utils.Constants;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import com.example.mjhwa.ironman.utils.Constants;
 
 /**
  * Remember connection informations for future use
  */
 public class ConnectionInfo {
-	
+
 	// Constants
-	
+
 	// Instance
 	private static ConnectionInfo mInstance = null;
-	
+
 	private Context mContext;
-	
+
 	// Target device's MAC address
 	private String mDeviceAddress = null;
 	// Name of the connected device
 	private String mDeviceName = null;
-	
-	
+
+
 	private ConnectionInfo(Context c) {
 		mContext = c;
-		
+
 		SharedPreferences prefs = mContext.getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE);
 		mDeviceAddress = prefs.getString(Constants.PREFERENCE_CONN_INFO_ADDRESS, null);
 		mDeviceName = prefs.getString(Constants.PREFERENCE_CONN_INFO_NAME, null);
 	}
-	
+
 	/**
 	 * Single pattern
 	 */
@@ -59,7 +59,7 @@ public class ConnectionInfo {
 		}
 		return mInstance;
 	}
-	
+
 	/**
 	 * Reset connection info
 	 */
@@ -67,7 +67,7 @@ public class ConnectionInfo {
 		mDeviceAddress = null;
 		mDeviceName = null;
 	}
-	
+
 	/**
 	 * Get saved device name
 	 * @return	String		device name
@@ -75,14 +75,14 @@ public class ConnectionInfo {
 	public String getDeviceName() {
 		return mDeviceName;
 	}
-	
+
 	/**
 	 * Remember device name for future use
 	 * @param name		device name
 	 */
 	public void setDeviceName(String name) {
 		mDeviceName = name;
-		
+
 		// At this time, connection is established successfully.
 		// Save connection info in shared preference.
 		SharedPreferences prefs = mContext.getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE);
@@ -91,7 +91,7 @@ public class ConnectionInfo {
 		editor.putString(Constants.PREFERENCE_CONN_INFO_NAME, mDeviceName);
 		editor.commit();
 	}
-	
+
 	/**
 	 * Get device address string
 	 * @return	String		device address
@@ -99,7 +99,7 @@ public class ConnectionInfo {
 	public String getDeviceAddress() {
 		return mDeviceAddress;
 	}
-	
+
 	/**
 	 * Set device address
 	 * @param address	device address
@@ -107,5 +107,5 @@ public class ConnectionInfo {
 	public void setDeviceAddress(String address) {
 		mDeviceAddress = address;
 	}
-	
+
 }

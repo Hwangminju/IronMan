@@ -47,7 +47,7 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setTitle(R.string.title_devices); // 액션바에 BLE Device Scan을 적용
+        // getActionBar().setTitle(R.string.title_devices); // 액션바에 BLE Device Scan을 적용
 
         intent = getIntent();
 
@@ -72,11 +72,14 @@ public class DeviceScanActivity extends ListActivity {
             return;
         }
         mBLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
-        // Checks if Bluetooth LE Scanner is available.    if (mBLEScanner == null) {
-        Toast.makeText(this, "Can not find BLE Scanner", Toast.LENGTH_SHORT).show();
-        finish();
-        return;
+        // Checks if Bluetooth LE Scanner is available.
+        if (mBLEScanner == null) {
+            Toast.makeText(this, "Can not find BLE Scanner", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
