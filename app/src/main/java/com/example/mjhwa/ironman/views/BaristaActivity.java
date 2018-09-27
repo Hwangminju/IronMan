@@ -20,33 +20,12 @@ public class BaristaActivity extends Activity {
 
     private TextView mTextMessage;
 
-    // 하단 네비게이션뷰
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-            switch (item.getItemId()) {
-                case R.id.menu_gesture:
-                    mTextMessage.setText(currentUser.getEmail());
-                    return true;
-                case R.id.menu_record:
-                    mTextMessage.setText(currentUser.getUid());
-                    return true;
-            }
-            return false;
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barista);
 
         mAuth = FirebaseAuth.getInstance();
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
 

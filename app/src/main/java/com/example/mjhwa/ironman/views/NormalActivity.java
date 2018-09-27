@@ -19,7 +19,7 @@ public class NormalActivity extends Activity implements View.OnClickListener {
     // 현재 로그인된 유저 정보를 담을 변수
     private FirebaseUser currentUser;
 
-    Button n1,n2,n3,n4,n5,n6,n7,n8,n9;
+    Button n1,n2,n3,n4,n5,n6,n7,n8,n9,n10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class NormalActivity extends Activity implements View.OnClickListener {
         n7 = (Button) findViewById(R.id.norm7);
         n8 = (Button) findViewById(R.id.norm8);
         n9 = (Button) findViewById(R.id.norm9);
+        n10 = (Button) findViewById(R.id.norm10);
 
         n1.setOnClickListener(this);
         n2.setOnClickListener(this);
@@ -47,13 +48,13 @@ public class NormalActivity extends Activity implements View.OnClickListener {
         n7.setOnClickListener(this);
         n8.setOnClickListener(this);
         n9.setOnClickListener(this);
-
+        n10.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         int no = 0;
-        Intent intent = new Intent(v.getContext(), LearnActivity.class);
+        Intent intent = new Intent(this, LearnActivity.class);
 
         switch (v.getId()) {
             case R.id.norm1:
@@ -82,6 +83,9 @@ public class NormalActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.norm9:
                 no = 9;
+                break;
+            case R.id.norm10:
+                no = 10;
                 break;
             default:
                 break;

@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
     // Context, System
     private Context mContext;
     private BTCTemplateService mService;
-    private MainActivity.ActivityHandler mActivityHandler;
+    private ActivityHandler mActivityHandler;
 
     private ImageView bleImage = null;
     private TextView bleStatus = null;
@@ -106,6 +106,19 @@ public class MainActivity extends Activity {
             mRefreshTimer = null;
         }
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        finalizeActivity();
+    }
+
+    @Override
+    public void onLowMemory (){
+        super.onLowMemory();
+        // onDestroy is not always called when applications are finished by Android system.
+        finalizeActivity();
     }
 
     private Button.OnClickListener mClickListener = new View.OnClickListener() {

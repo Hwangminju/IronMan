@@ -4,8 +4,8 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.mjhwa.ironman"
-        minSdkVersion 23
-        targetSdkVersion 24
+        minSdkVersion 18
+        targetSdkVersion 18
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
