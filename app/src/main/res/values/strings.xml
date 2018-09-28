@@ -12,14 +12,14 @@
     <string name="title_devices">BLE Device Scan</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
 
-    <string name="bt_connected">BLE CONNECTED</string>
-    <string name="bt_disconnected">BLE NOT CONNECTED</string>
+    <string name="bt_connected">Bluetooth Connected</string>
+    <string name="bt_disconnected">Bluetooth Not Connected</string>
     <string name="scan_device"><u>Scan Device</u></string>
     <string name="discoverable"><u>Make discoverable</u></string>
     <string name="disconnect"><u>Disconnect</u></string>
     <string name="bt_wait">WAIT.. (select a device)</string>
-    <string name="bt_connecting">CONNECTING</string>
-    <string name="bt_error">ERROR</string>
+    <string name="bt_connecting">Connecting</string>
+    <string name="bt_error">Error</string>
     <string name="bt_not_enabled">Bluetooth is not enabled. Set the bluetooth on at phone settings.</string>
 
     <!-- SignActivity-->

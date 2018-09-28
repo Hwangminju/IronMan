@@ -18,6 +18,7 @@ import java.util.TimerTask;
 import android.widget.ViewFlipper;
 
 import com.example.mjhwa.ironman.R;
+import com.example.mjhwa.ironman.bluetooth.BluetoothManager;
 
 import static java.sql.Types.NULL;
 
@@ -39,8 +40,9 @@ public class LearnActivity extends AppCompatActivity {
         setContentView(R.layout.activity_learn);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar); // 상단 틀바
-        mToolbar.setTitleTextColor(Color.parseColor("#E0E0E0"));
+        mToolbar.setTitleTextColor(Color.parseColor("#fff"));
         setSupportActionBar(mToolbar);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
 
@@ -78,7 +80,8 @@ public class LearnActivity extends AppCompatActivity {
 
         });
 
-        switch(getNo) { // intent로 받아온 동작 num case
+        switch(getNo) {
+            // intent로 받아온 동작 num case
             case 1:
                 pic.setImageResource(R.drawable.norm_1);
                 name.setText(R.string.opt1);
