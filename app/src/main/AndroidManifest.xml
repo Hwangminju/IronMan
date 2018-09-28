@@ -42,6 +42,10 @@
             android:name=".views.MainActivity"
             android:label="@string/title_activity_main" />
 
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" />
+
         <activity android:name=".views.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,22 +60,10 @@
             android:theme="@android:style/Theme.Dialog" />
 
         <activity
-            android:name=".ble.DeviceScanActivity"
-            android:label="DeviceScanActivity" />
-
-        <activity
-            android:name=".ble.DeviceControlActivity"
-            android:label="DeviceControlActivity" />
-
-        <!-- Service -->
-        <service
-            android:name=".service.BTCTemplateService"
+            android:name=".DeviceListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/service_name" />
-
-        <!-- Broadcast receiver -->
-        <receiver android:name=".service.ServiceMonitoring$ServiceMonitoringBR" />
+            android:label="Select a device to connect"
+            android:theme="@android:style/Theme.Dialog" />
 
         <activity
             android:name=".views.SignActivity"
@@ -83,10 +75,17 @@
             android:name=".views.BaristaActivity"
             android:label="@string/title_activity_barista">
         </activity>
-        <activity
-            android:name=".ble.BLEActivity"
-            android:label="@string/title_activity_ble">
-        </activity>
+
+        <!-- Service -->
+        <service
+            android:name=".service.BTCTemplateService"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/service_name" />
+
+        <!-- Broadcast receiver -->
+        <receiver android:name=".service.ServiceMonitoring$ServiceMonitoringBR" />
+
     </application>
 
 </manifest>

@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mjhwa.ironman.R;
-import com.example.mjhwa.ironman.ble.BluetoothLeService;
 
 public class StartActivity extends Activity {
 

@@ -18,7 +18,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <TextView android:id="@+id/title_paired_devices"
+    <TextView android:id="@+id/text_paired_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/title_paired_devices"
@@ -26,14 +26,14 @@
         android:background="#666"
         android:textColor="#fff"
         android:paddingLeft="5dp"
-    />
-    <ListView android:id="@+id/paired_devices"
+        />
+    <ListView android:id="@+id/list_paired_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stackFromBottom="true"
         android:layout_weight="1"
-    />
-    <TextView android:id="@+id/title_new_devices"
+        />
+    <TextView android:id="@+id/text_new_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/title_other_devices"
@@ -41,16 +41,16 @@
         android:background="#666"
         android:textColor="#fff"
         android:paddingLeft="5dp"
-    />
-    <ListView android:id="@+id/new_devices"
+        />
+    <ListView android:id="@+id/list_new_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stackFromBottom="true"
         android:layout_weight="2"
-    />
-    <Button android:id="@+id/button_scan"
+        />
+    <Button android:id="@+id/btn_scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_scan"
-    />
+        />
 </LinearLayout>

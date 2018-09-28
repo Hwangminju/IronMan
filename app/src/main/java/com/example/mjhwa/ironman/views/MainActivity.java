@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
@@ -20,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mjhwa.ironman.R;
-import com.example.mjhwa.ironman.ble.DeviceScanActivity;
 import com.example.mjhwa.ironman.bluetooth.DeviceListActivity;
 import com.example.mjhwa.ironman.service.BTCTemplateService;
 import com.example.mjhwa.ironman.utils.AppSettings;
@@ -72,10 +72,10 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        bleImage = (ImageView) findViewById(R.id.ble_image);
+        bleImage = (ImageView) findViewById(R.id.bt_image);
         bleImage.setImageDrawable(getResources().getDrawable(R.drawable.no_bluetooth));
-        bleStatus = (TextView) findViewById(R.id.ble_status);
-        bleStatus.setText(getResources().getString(R.string.ble_disconnected));
+        bleStatus = (TextView) findViewById(R.id.bt_status);
+        bleStatus.setText(getResources().getString(R.string.bt_disconnected));
 
         scan_device = (TextView) findViewById(R.id.scan_device);
         btNormal = (Button) findViewById(R.id.btNormal);
@@ -144,6 +144,18 @@ public class MainActivity extends Activity {
 
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed(); // TODO: Disable this line to run below code
+        finish();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        // This prevents reload after configuration changes
+        super.onConfigurationChanged(newConfig);
+    }
 
     /**
      * Service connection
@@ -286,38 +298,38 @@ public class MainActivity extends Activity {
             switch(msg.what) {
                 // 블루투스 연결 상태에 따라 UI 변경
                 case Constants.MESSAGE_BT_STATE_INITIALIZED:
-                    bleStatus.setText(getResources().getString(R.string.ble_disconnected));
+                    bleStatus.setText(getResources().getString(R.string.bt_disconnected));
                     bleImage.setImageDrawable(getResources().getDrawable(R.drawable.no_bluetooth));
                     break;
                 case Constants.MESSAGE_BT_STATE_LISTENING:
-                    bleStatus.setText(getResources().getString(R.string.ble_wait));
+                    bleStatus.setText(getResources().getString(R.string.bt_wait));
                     bleImage.setImageDrawable(getResources().getDrawable(R.drawable.no_bluetooth));
                     break;
                 case Constants.MESSAGE_BT_STATE_CONNECTING:
-                    bleStatus.setText(getResources().getString(R.string.ble_connecting));
+                    bleStatus.setText(getResources().getString(R.string.bt_connecting));
                     bleImage.setImageDrawable(getResources().getDrawable(R.drawable.ing_bluetooth));
                     break;
                 case Constants.MESSAGE_BT_STATE_CONNECTED:
                     if(mService != null) {
                         String deviceName = mService.getDeviceName();
                         if(deviceName != null) {
-                            bleStatus.setText(getResources().getString(R.string.ble_connected) + " : " + deviceName);
+                            bleStatus.setText(getResources().getString(R.string.bt_connected) + " : " + deviceName);
                             Toast.makeText(MainActivity.this, deviceName + "에 연결 성공", Toast.LENGTH_SHORT).show();
                             bleImage.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth));
                         } else {
-                            bleStatus.setText(getResources().getString(R.string.ble_connected) + " : no name");
+                            bleStatus.setText(getResources().getString(R.string.bt_connected) + " : no name");
                             bleImage.setImageDrawable(getResources().getDrawable(R.drawable.bluetooth));
                         }
                     }
                     break;
                 case Constants.MESSAGE_BT_STATE_ERROR:
-                    bleStatus.setText(getResources().getString(R.string.ble_error));
+                    bleStatus.setText(getResources().getString(R.string.bt_error));
                     bleImage.setImageDrawable(getResources().getDrawable(R.drawable.disabled));
                     break;
 
                 // BT Command status
                 case Constants.MESSAGE_CMD_ERROR_NOT_CONNECTED:
-                    bleStatus.setText(getResources().getString(R.string.ble_cmd_sending_error));
+                    bleStatus.setText(getResources().getString(R.string.bt_cmd_sending_error));
                     bleImage.setImageDrawable(getResources().getDrawable(R.drawable.disabled));
                     break;
 

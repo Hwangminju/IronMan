@@ -30,44 +30,64 @@
     </View>
 
     <LinearLayout
+        android:id="@+id/bluetooth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/view"
-        android:gravity="center"
         android:layout_marginVertical="40dp"
-        android:id="@+id/bluetooth">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="30dp">
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/bluetooth"
-            android:id="@+id/ble_image"/>
+            android:id="@+id/bt_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/bluetooth" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
             android:orientation="vertical"
-            android:layout_marginLeft="10dp">
+            android:gravity="center_vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="BLE CONNECT STATUS"
+                android:id="@+id/bt_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BlueTooth Connect Status"
                 android:textColor="@color/red3"
                 android:gravity="center_vertical"
-                android:id="@+id/ble_status"/>
+                android:layout_weight="1"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/scan_device"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:id="@+id/scan_device"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/scan_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/scan_device"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/scanned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:gravity="center_vertical"
+                    android:text="@string/discoverable"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
