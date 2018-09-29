@@ -8,8 +8,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import com.example.mjhwa.ironman.R.layout.activity_splash
-import com.hardcopy.btchat.utils.Logs
-
+import com.example.mjhwa.ironman.utils.Logs
 
 class SplashActivity : Activity() {
     companion object {

@@ -66,7 +66,7 @@ public class SignActivity extends Activity implements View.OnClickListener {
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             updateUI(currentUser);
-            startActivity(new Intent(SignActivity.this, com.example.mjhwa.ironman.MainActivity.class));
+            startActivity(new Intent(SignActivity.this, MainActivity.class));
             finish();
         }
 
@@ -103,7 +103,7 @@ public class SignActivity extends Activity implements View.OnClickListener {
                             updateUI(currentUser);
                             Toast.makeText(SignActivity.this, "회원가입 성공 : " + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
                             // FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(SignActivity.this, com.example.mjhwa.ironman.MainActivity.class));
+                            startActivity(new Intent(SignActivity.this, MainActivity.class));
                             finish();
                         } else {
                             // 회원가입 실패
@@ -140,7 +140,7 @@ public class SignActivity extends Activity implements View.OnClickListener {
                             updateUI(currentUser);
                             Toast.makeText(SignActivity.this, "로그인 성공 : " + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
                             // FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(SignActivity.this, com.example.mjhwa.ironman.MainActivity.class));
+                            startActivity(new Intent(SignActivity.this, MainActivity.class));
                             finish();
                         } else {
                             // 로그인 실패

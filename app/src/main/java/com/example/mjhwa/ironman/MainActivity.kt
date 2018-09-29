@@ -9,9 +9,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.v4.app.ActivityCompat
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import com.example.mjhwa.ironman.R.layout.activity_main
 import com.example.mjhwa.ironman.bluetooth.BluetoothManager
@@ -19,10 +16,10 @@ import com.example.mjhwa.ironman.utils.Const
 import com.example.mjhwa.ironman.utils.Logs
 import com.example.mjhwa.ironman.views.BaristaActivity
 import com.example.mjhwa.ironman.views.NormalActivity
+import com.example.mjhwa.ironman.views.SignActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
-import java.nio.charset.Charset
 
 
 class MainActivity : Activity() {
@@ -31,9 +28,9 @@ class MainActivity : Activity() {
     }
 
     // 이메일, 비밀번호 로그인 모듈 변수
-    private var mAuth: FirebaseAuth? = null
+    val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     // 현재 로그인된 유저 정보를 담을 변수
-    private val currentUser: FirebaseUser? = null
+    val currentUser: FirebaseUser? = mAuth.currentUser
     private val mBtHandler = BluetoothHandler()
     private val mBluetoothManager: BluetoothManager = BluetoothManager.getInstance()
     private var mPrevUpdateTime = 0L
@@ -46,6 +43,9 @@ class MainActivity : Activity() {
         setContentView(activity_main)
 
         Logs.d(TAG, "# MainActivity - onCreate()")
+        if(currentUser != null) {
+            Toast.makeText(this, currentUser.email + "님, 환영합니다!",Toast.LENGTH_SHORT).show()
+        } // 로그인했을 때 토스트 메세지
 
         if(!checkBluetooth()) {
             scan_device.isEnabled = false
@@ -73,6 +73,21 @@ class MainActivity : Activity() {
             startActivity(intent)
             Toast.makeText(this, "바리스타 모드를 시작합니다.", Toast.LENGTH_SHORT).show()
         }
+
+        btSignout.setOnClickListener{ // 로그아웃 버튼
+            val alertDiag = AlertDialog.Builder(this)
+            alertDiag.setMessage("로그아웃 하시겠습니까?") // alert 다이얼로그 메세지
+            alertDiag.setPositiveButton("OK") { _: DialogInterface, _: Int ->
+                mAuth!!.signOut()
+                finish()
+                startActivity(Intent(this, SignActivity::class.java))
+            }
+            alertDiag.setNegativeButton("Cancel") { _: DialogInterface, _: Int -> }
+
+            val alert = alertDiag.create()
+            alert.setTitle("Log Out")
+            alert.show()
+        }
     }
 
     override fun onBackPressed() {
@@ -86,7 +101,7 @@ class MainActivity : Activity() {
         alertDiag.setNegativeButton("Cancel") { _: DialogInterface, _: Int -> }
 
         val alert = alertDiag.create()
-        alert.setTitle("Warning")
+        alert.setTitle("Exit")
         alert.show()
     }
 
