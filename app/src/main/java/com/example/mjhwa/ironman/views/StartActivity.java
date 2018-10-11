@@ -22,11 +22,11 @@ public class StartActivity extends Activity {
             @Override
             public void run() {
                 // TODO
-                Intent intent = new Intent(getApplicationContext(), SignActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                 startActivity(intent);
 
             }
-        }, 2000);
+        }, 1500);
     }
 
 }

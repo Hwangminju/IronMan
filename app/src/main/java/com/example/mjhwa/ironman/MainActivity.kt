@@ -15,6 +15,7 @@ import com.example.mjhwa.ironman.bluetooth.BluetoothManager
 import com.example.mjhwa.ironman.utils.Const
 import com.example.mjhwa.ironman.utils.Logs
 import com.example.mjhwa.ironman.views.BaristaActivity
+import com.example.mjhwa.ironman.views.MenuActivity
 import com.example.mjhwa.ironman.views.NormalActivity
 import com.example.mjhwa.ironman.views.SignActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -80,7 +81,7 @@ class MainActivity : Activity() {
             alertDiag.setPositiveButton("OK") { _: DialogInterface, _: Int ->
                 mAuth!!.signOut()
                 finish()
-                startActivity(Intent(this, SignActivity::class.java))
+                startActivity(Intent(this, MenuActivity::class.java))
             }
             alertDiag.setNegativeButton("Cancel") { _: DialogInterface, _: Int -> }
 

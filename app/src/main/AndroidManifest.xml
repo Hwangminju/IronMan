@@ -30,13 +30,6 @@
         android:roundIcon="@mipmap/bionic_arm"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".views.LearnActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" />
 
         <activity android:name=".views.StartActivity">
             <intent-filter>
@@ -45,6 +38,21 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".views.JoinActivity"
+            android:label="JoinActivity" />
+
+        <activity
+            android:name=".views.LoginActivity"
+            android:label="LoginActivity" />
+
+        <activity
+            android:name=".views.MenuActivity"
+            android:label="MenuActivity" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" />
 
         <activity
             android:name=".DeviceListActivity"
@@ -53,15 +61,16 @@
             android:theme="@android:style/Theme.Dialog" />
 
         <activity
-            android:name=".views.SignActivity"
-            android:label="@string/title_activity_signup" />
-        <activity
             android:name=".views.NormalActivity"
             android:label="@string/title_activity_normal" />
+
         <activity
             android:name=".views.BaristaActivity"
-            android:label="@string/title_activity_barista">
-        </activity>
+            android:label="@string/title_activity_barista" />
+
+        <activity
+            android:name=".views.LearnActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
 
     </application>
 
