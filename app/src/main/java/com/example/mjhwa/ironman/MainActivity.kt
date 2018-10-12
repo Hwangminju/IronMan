@@ -37,11 +37,12 @@ class MainActivity : Activity() {
     private var mPrevUpdateTime = 0L
     private var mIsConnected = false
 
-    internal var intent = getIntent()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(activity_main)
+
+        val intent = getIntent()
+        val sId:String = intent.getStringExtra("ID")
 
         Logs.d(TAG, "# MainActivity - onCreate()")
         if(currentUser != null) {
@@ -65,6 +66,7 @@ class MainActivity : Activity() {
 
         btNormal.setOnClickListener {
             val intent = Intent(this, NormalActivity::class.java)
+            intent.putExtra("ID", sId)
             startActivity(intent)
             Toast.makeText(this, "일반 모드를 시작합니다.", Toast.LENGTH_SHORT).show()
         }

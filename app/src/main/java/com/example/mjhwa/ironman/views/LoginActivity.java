@@ -74,12 +74,18 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public class loginDB extends AsyncTask<String, Integer, String> {
+    public class MyInfo
+    {
+        public String id;
+        public String data;
+    }
+
+    public class loginDB extends AsyncTask<String, Integer, MyInfo> {
 
         String errorString = null;
 
         @Override
-        protected String doInBackground(String... params) {
+        protected MyInfo doInBackground(String... params) {
 
             String serverURL = params[0];
             String postParameters = "u_id=" + params[1] + "&u_pw=" + params[2] + "";
@@ -144,15 +150,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 bufferedReader.close();
-                String data = sb.toString().trim();
 
-                if (data.equals("1")) {
+                String data = sb.toString().trim();
+                MyInfo myInfo = new MyInfo();
+                myInfo.data = data;
+                myInfo.id = params[1];
+
+                if (myInfo.data.equals("1")) {
                     Log.e("RESULT", "성공적으로 처리되었습니다!");
                 } else {
                     Log.e("RESULT", "에러 발생! ERRCODE = " + data);
                 }
 
-                return data;
+                return myInfo;
 
             } catch (Exception e) {
                 Log.d(TAG, "GetData : Error ", e);
@@ -180,12 +190,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String data) {
-            super.onPostExecute(data);
+        protected void onPostExecute(final MyInfo myInfo) {
+            super.onPostExecute(myInfo);
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(LoginActivity.this);
 
-            if(data.equals("1"))
+            if(myInfo.data.equals("1"))
             {
                 Log.e("RESULT","로그인 성공!");
                 alertBuilder
@@ -196,7 +206,9 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // dialog.dismiss();
+                                Log.e("RESULT","Log In With ID : " + myInfo.id);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("ID", myInfo.id);
                                 startActivity(intent);
                                 finish();
                             }
@@ -204,7 +216,7 @@ public class LoginActivity extends AppCompatActivity {
                 AlertDialog dialog = alertBuilder.create();
                 dialog.show();
             }
-            else if(data.equals("0"))
+            else if(myInfo.data.equals("0"))
             {
                 Log.e("RESULT","비밀번호가 일치하지 않습니다.");
                 alertBuilder
@@ -223,10 +235,10 @@ public class LoginActivity extends AppCompatActivity {
             }
             else
             {
-                Log.e("RESULT","에러 발생! ERRCODE = " + data);
+                Log.e("RESULT","에러 발생! ERRCODE = " + myInfo.data);
                 alertBuilder
                         .setTitle("알림")
-                        .setMessage("등록중 에러가 발생했습니다! errcode : "+ data)
+                        .setMessage("등록중 에러가 발생했습니다! errcode : "+ myInfo.data)
                         .setCancelable(true)
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
