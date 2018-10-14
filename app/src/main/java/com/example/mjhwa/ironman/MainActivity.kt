@@ -125,7 +125,7 @@ class MainActivity : Activity() {
         } else {
             bt_image.setImageDrawable(resources.getDrawable(R.drawable.bt))
         }
-        bt_status.text = resources.getString(R.string.bt_disconnected)
+        bt_status.text = resources.getString(R.string.bt_wait)
 
         scan_device.setOnClickListener {
             if(mIsConnected)

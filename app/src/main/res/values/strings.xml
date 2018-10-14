@@ -17,7 +17,7 @@
     <string name="scan_device"><u>Scan Device</u></string>
     <string name="discoverable"><u>Make discoverable</u></string>
     <string name="disconnect"><u>Disconnect</u></string>
-    <string name="bt_wait">WAIT.. (select a device)</string>
+    <string name="bt_wait">Scan a device</string>
     <string name="bt_connecting">Connecting</string>
     <string name="bt_error">Error</string>
     <string name="bt_not_enabled">Bluetooth is not enabled. Set the bluetooth on at phone settings.</string>
@@ -102,7 +102,7 @@
     <!-- Bluetooth -->
     <string name="bt_title">Bluetooth</string>
     <string name="bt_state_init">initializing</string>
-    <string name="bt_state_wait">waiting.. (select a device manually)</string>
+    <string name="bt_state_wait">No Device connected</string>
     <string name="bt_state_connect">connecting</string>
     <string name="bt_state_connected">connected</string>
     <string name="bt_state_error">ERROR</string>

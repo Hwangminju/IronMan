@@ -44,6 +44,8 @@ class BluetoothManager {
         const val STATE_LISTEN = 1     // now listening for incoming connections
         const val STATE_CONNECTING = 2 // now initiating an outgoing connection
         const val STATE_CONNECTED = 3  // now connected to a remote device
+        const val STATE_DISCONNECTING = 4
+        const val STATE_DISCONNECTED = 5
 
         // Message types sent from the BluetoothManager to Handler
         const val MESSAGE_STATE_CHANGE = 1
