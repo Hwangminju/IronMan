@@ -37,18 +37,13 @@ class LearnActivity : AppCompatActivity() {
     private val mBluetoothManager: BluetoothManager = BluetoothManager.getInstance()
     private var mPrevUpdateTime = 0L
 
-    internal var num: Int = 0
-    internal var id: String? = null
-
     private val TAG = "phptest"
 
     private val timer: Timer? = null
     private var mToolbar: Toolbar? = null
 
-    inner class Data : Application() {
-        var id: String? = null
-        var num: Int = 0
-    }
+    var id : String? = null
+    var num : Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,29 +61,37 @@ class LearnActivity : AppCompatActivity() {
         vf.setFlipInterval(1000)
 
         val intent = getIntent()
-
         id = intent.getStringExtra("ID")
+
         num = intent.getIntExtra("NO",0)
+        // mBluetoothManager.setHandler(mBtHandler)
 
         btn_start.setOnClickListener {
-            btn_start.visibility = View.GONE // start 버튼은 없어지고
+            btn_start.visibility = View.INVISIBLE // start 버튼은 없어지고
             vf.isEnabled = true
             vf.visibility = View.VISIBLE // timer는 나타내기
             vf.startFlipping()
+
+            mBluetoothManager.setHandler(mBtHandler)
+
+            /*
+            try {
+                val lDB = InsertDB()
+                lDB.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/login.php",
+                        158, 200, 25, num.toString(), id)
+            } catch (e: NullPointerException) {
+                Log.e("err", e.message)
+            }*/
 
             val displayedChild = vf.displayedChild
             val childCount = vf.childCount
 
             Handler().postDelayed({
-                try {
-                    mBluetoothManager.setHandler(mBtHandler)
-                }
-
-                catch(e: NullPointerException) { }
 
                 vf.stopFlipping()
+                vf.displayedChild = 0
                 vf.isEnabled = false
-                vf.visibility = View.GONE
+                vf.visibility = View.INVISIBLE
                 btn_start.visibility = View.VISIBLE
 
             },10000)
@@ -141,6 +144,32 @@ class LearnActivity : AppCompatActivity() {
         }
     }
 
+    inner class BluetoothHandler : Handler() { // emg 값 수신
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                BluetoothManager.MESSAGE_READ -> {
+                    if (msg.obj != null) {
+                        val currentTime = System.currentTimeMillis()
+                        if (mPrevUpdateTime + 10 <= currentTime) {
+                            tv_emg1.setText("")
+                            mPrevUpdateTime = currentTime
+                        }
+                        var emg = (msg.obj as ByteArray).toString(Charset.defaultCharset())
+                        var emg_list = emg.split(" ").toTypedArray()
+                        tv_emg1.setText(emg_list[0])
+                        tv_emg2.setText(emg_list[1])
+                        tv_emg3.setText(emg_list[2])
+
+                        val lDB = InsertDB()
+                        lDB.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/insert.php",
+                                emg_list[0], emg_list[1], emg_list[2], num, id)
+                    }
+                }
+            }
+            super.handleMessage(msg)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         //return super.onCreateOptionsMenu(menu);
         val menuInflater = menuInflater
@@ -158,37 +187,18 @@ class LearnActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    inner class BluetoothHandler : Handler() { // emg 센서 값 수신
-        override fun handleMessage(msg: Message) {
-            when (msg.what) {
-                BluetoothManager.MESSAGE_READ -> {
-                    if (msg.obj != null) {
-                        val currentTime = System.currentTimeMillis()
-                        if(mPrevUpdateTime + 10 <= currentTime) {
-                            tv_emg.append("\n")
-                            mPrevUpdateTime = currentTime
-                        }
-                        tv_emg.append((msg.obj as ByteArray).toString(Charset.defaultCharset()))
-                    }
-                }
-            }
-
-            super.handleMessage(msg)
-        }
-    }
-
-    inner class InsertDB : AsyncTask<String, Int, String>() {
+    inner class InsertDB : AsyncTask<Any, Int, String>() {
 
         internal var errorString: String? = null
 
-        override fun doInBackground(vararg params: String): String? {
+        override fun doInBackground(vararg params: Any): String? {
 
             val serverURL = params[0]
             val postParameters = "emg1=" + params[1] + "&emg2=" + params[2] +
                     "&emg3=" + params[3] + "&gesture=" + params[4] + "&u_id=" + params[5] + ""
 
             try {
-                val url = URL(serverURL)
+                val url = URL(serverURL.toString())
                 val conn = url.openConnection() as HttpURLConnection
 
                 conn.readTimeout = 5000
