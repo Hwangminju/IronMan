@@ -159,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (myInfo.data.equals("1")) {
                     Log.e("RESULT", "성공적으로 처리되었습니다!");
                 } else {
-                    Log.e("RESULT", "에러 발생! ERRCODE = " + data);
+                    Log.e("RESULT", "에러 발생! ERRCODE = " + myInfo.data);
                 }
 
                 return myInfo;
@@ -238,7 +238,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("RESULT","에러 발생! ERRCODE = " + myInfo.data);
                 alertBuilder
                         .setTitle("알림")
-                        .setMessage("등록중 에러가 발생했습니다! errcode : "+ myInfo.data)
+                        .setMessage("로그인 중 에러가 발생했습니다! errcode : "+ myInfo.data)
                         .setCancelable(true)
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
