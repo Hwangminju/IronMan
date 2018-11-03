@@ -205,8 +205,6 @@ class MainActivity : Activity() {
         mBluetoothManager.stop()
     }
 
-
-
     // The BroadcastReceiver that listens for discovered devices and
     // changes the title when discovery is finished
     private val mReceiver = object : BroadcastReceiver() {

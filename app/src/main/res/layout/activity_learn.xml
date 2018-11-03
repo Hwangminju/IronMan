@@ -151,29 +151,18 @@
                     android:background="@color/grayd"
                     android:layout_marginHorizontal="7dp" />
 
-                <TextView
-                    android:id="@+id/tv_emg1"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:text="EMG 1"
-                    android:textSize="15sp" />
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/message_listview"/>
 
-                <TextView
-                    android:id="@+id/tv_emg2"
+                <!--TextView
+                    android:id="@+id/tv_emg"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:text="EMG 2"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/tv_emg3"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:text="EMG 3"
-                    android:textSize="15sp" />
+                    android:text="EMG"
+                    android:textSize="20sp" /-->
 
             </LinearLayout>
 

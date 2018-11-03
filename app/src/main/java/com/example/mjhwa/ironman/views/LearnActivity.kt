@@ -1,5 +1,6 @@
 package com.example.mjhwa.ironman.views
 
+import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -8,36 +9,37 @@ import android.view.View
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import java.util.Timer
 import android.bluetooth.BluetoothAdapter
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.AsyncTask
 import android.os.Message
 import android.util.Log
 
-import android.widget.ViewFlipper
-
 import com.example.mjhwa.ironman.R
 import com.example.mjhwa.ironman.bluetooth.BluetoothManager
 import kotlinx.android.synthetic.main.activity_learn.*
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 import java.nio.charset.Charset
 import android.app.Application
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothSocket
+import android.content.*
+import android.widget.*
+import java.io.*
+import java.util.*
+import kotlin.text.Charsets.UTF_8
 
 class LearnActivity : AppCompatActivity() {
 
     private val mBtHandler = BluetoothHandler()
     private val mBluetoothManager: BluetoothManager = BluetoothManager.getInstance()
     private var mPrevUpdateTime = 0L
+    internal var isConnectionError = false
 
     private val TAG = "phptest"
+    private val TAG_BT = "BluetoothClient"
+    private var mConversationArrayAdapter: ArrayAdapter<String>? = null
 
     private val timer: Timer? = null
     private var mToolbar: Toolbar? = null
@@ -45,15 +47,26 @@ class LearnActivity : AppCompatActivity() {
     var id : String? = null
     var num : Int? = 0
 
+    internal val uploadFilePath = "/data/data/com.example.mjhwa.ironman/databases/"
+    internal val uploadFileName = "data.txt" // 전송하고자 하는 파일 이름
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_learn)
+
+        mBluetoothManager.setHandler(mBtHandler)
 
         mToolbar = findViewById<View>(R.id.toolbar) as Toolbar // 상단 틀바
         mToolbar!!.setTitleTextColor(Color.parseColor("white"))
         setSupportActionBar(mToolbar)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
+
+        val mMessageListview = findViewById(R.id.message_listview) as ListView
+
+        mConversationArrayAdapter = ArrayAdapter(this,
+                android.R.layout.simple_list_item_1)
+        mMessageListview.adapter = mConversationArrayAdapter
 
         // 이미지들이 담긴 컨테이너
         val vf = findViewById<View>(R.id.view_flipper) as ViewFlipper
@@ -72,7 +85,13 @@ class LearnActivity : AppCompatActivity() {
             vf.visibility = View.VISIBLE // timer는 나타내기
             vf.startFlipping()
 
-            mBluetoothManager.setHandler(mBtHandler)
+            val sendMessage = "start"
+            if (sendMessage.length > 0) {
+                mBluetoothManager.write(sendMessage.toByteArray())
+            }
+
+            // mBluetoothManager.write("0".toByteArray())
+            // mBluetoothManager.setHandler(mBtHandler)
 
             /*
             try {
@@ -95,6 +114,12 @@ class LearnActivity : AppCompatActivity() {
                 btn_start.visibility = View.VISIBLE
 
             },10000)
+
+            val mMessageListview = findViewById(R.id.message_listview) as ListView
+
+            mConversationArrayAdapter = ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1)
+            mMessageListview.adapter = mConversationArrayAdapter
         }
 
         when (num) {
@@ -148,21 +173,15 @@ class LearnActivity : AppCompatActivity() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 BluetoothManager.MESSAGE_READ -> {
+
                     if (msg.obj != null) {
                         val currentTime = System.currentTimeMillis()
                         if (mPrevUpdateTime + 10 <= currentTime) {
-                            tv_emg1.setText("")
+                            // tv_emg.append("\n")
+                            Log.e("Read EMG", "Reading EMG Sensors")
+                            mConversationArrayAdapter!!.insert((msg.obj as ByteArray).toString(Charset.defaultCharset()),0)
                             mPrevUpdateTime = currentTime
                         }
-                        var emg = (msg.obj as ByteArray).toString(Charset.defaultCharset())
-                        var emg_list = emg.split(" ").toTypedArray()
-                        tv_emg1.setText(emg_list[0])
-                        tv_emg2.setText(emg_list[1])
-                        tv_emg3.setText(emg_list[2])
-
-                        val lDB = InsertDB()
-                        lDB.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/insert.php",
-                                emg_list[0], emg_list[1], emg_list[2], num, id)
                     }
                 }
             }
@@ -267,7 +286,9 @@ class LearnActivity : AppCompatActivity() {
             } else {
                 Log.e("RESULT", "에러 발생! ERRCODE = $data")
             }
+
         }
 
     }
+
 }
