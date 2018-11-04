@@ -63,9 +63,9 @@ public class JoinActivity extends AppCompatActivity {
                     sId = et_id.getText().toString();
                     sPw = et_pw.getText().toString();
                     sPw_chk = et_pw_chk.getText().toString();
-                    if (rb_left.isChecked()) {
+                    if (rb_left.isChecked()) { // 왼손으로 앱 사용
                         sLR = "left";
-                    } else if (rb_right.isChecked()) {
+                    } else if (rb_right.isChecked()) { // 오른손으로 앱 사용
                         sLR = "right";
                     }
 
