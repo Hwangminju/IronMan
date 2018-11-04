@@ -101,6 +101,52 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10sp" >
+    </View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/view"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/rg_lr">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="왼쪽 의수 사용"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:buttonTint="@color/white"
+                android:id="@+id/rb_left"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="오른쪽 의수 사용"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:buttonTint="@color/white"
+                android:id="@+id/rb_right"
+                android:layout_weight="1"/>
+
+
+        </RadioGroup>
+
+    </LinearLayout>
+
     <Button
         android:text="Join"
         android:layout_width="100dp"

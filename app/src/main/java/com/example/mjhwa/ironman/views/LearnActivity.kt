@@ -17,6 +17,8 @@ import android.util.Log
 import com.example.mjhwa.ironman.R
 import com.example.mjhwa.ironman.bluetooth.BluetoothManager
 import kotlinx.android.synthetic.main.activity_learn.*
+import kotlinx.android.synthetic.main.activity_learn_left.*
+import kotlinx.android.synthetic.main.activity_learn_right.*
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
@@ -26,6 +28,8 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.*
 import android.widget.*
+import com.example.mjhwa.ironman.R.layout.activity_learn_left
+import com.example.mjhwa.ironman.R.layout.activity_learn_right
 import java.io.*
 import java.util.*
 import kotlin.text.Charsets.UTF_8
@@ -45,6 +49,7 @@ class LearnActivity : AppCompatActivity() {
     private var mToolbar: Toolbar? = null
 
     var id : String? = null
+    var lr : String? = null
     var num : Int? = 0
 
     internal val uploadFilePath = "/data/data/com.example.mjhwa.ironman/databases/"
@@ -52,35 +57,152 @@ class LearnActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_learn)
+
+        val intent = getIntent()
+        id = intent.getStringExtra("ID")
+        lr = intent.getStringExtra("LR")
+
+        if (lr == "left") {
+            setContentView(activity_learn_left)
+        } else if (lr == "right") {
+            setContentView(activity_learn_right)
+        }
 
         mBluetoothManager.setHandler(mBtHandler)
 
-        mToolbar = findViewById<View>(R.id.toolbar) as Toolbar // 상단 틀바
+        if (lr == "left")
+            run_left()
+        else if (lr == "right")
+            run_right()
+    }
+
+    fun run_left(): Boolean {
+
+        btn_learning_left.visibility = View.GONE
+        mToolbar = findViewById<View>(R.id.toolbar_left) as Toolbar // 상단 틀바
         mToolbar!!.setTitleTextColor(Color.parseColor("white"))
         setSupportActionBar(mToolbar)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
 
-        val mMessageListview = findViewById(R.id.message_listview) as ListView
-
-        mConversationArrayAdapter = ArrayAdapter(this,
-                android.R.layout.simple_list_item_1)
-        mMessageListview.adapter = mConversationArrayAdapter
-
         // 이미지들이 담긴 컨테이너
-        val vf = findViewById<View>(R.id.view_flipper) as ViewFlipper
-        vf.visibility = View.INVISIBLE
+        val vf = findViewById<View>(R.id.view_flipper_left) as ViewFlipper
+        vf.isEnabled = false
         vf.setFlipInterval(1000)
-
-        val intent = getIntent()
-        id = intent.getStringExtra("ID")
 
         num = intent.getIntExtra("NO",0)
         // mBluetoothManager.setHandler(mBtHandler)
 
-        btn_start.setOnClickListener {
-            btn_start.visibility = View.INVISIBLE // start 버튼은 없어지고
+        btn_start_left.setOnClickListener {
+            btn_start_left.visibility = View.GONE // start 버튼은 없어지고
+            btn_learning_left.visibility = View.VISIBLE
+            vf.isEnabled = true
+            vf.startFlipping()
+
+            val sendMessage = "start"
+            if (sendMessage.length > 0) {
+                mBluetoothManager.write(sendMessage.toByteArray())
+            }
+
+            // mBluetoothManager.write("0".toByteArray())
+            // mBluetoothManager.setHandler(mBtHandler)
+
+            /*
+            try {
+                val lDB = InsertDB()
+                lDB.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/login.php",
+                        158, 200, 25, num.toString(), id)
+            } catch (e: NullPointerException) {
+                Log.e("err", e.message)
+            }*/
+
+            val displayedChild = vf.displayedChild
+            val childCount = vf.childCount
+
+            Handler().postDelayed({
+                vf.stopFlipping()
+                vf.displayedChild = 0
+                vf.isEnabled = false
+                btn_learning_left.visibility = View.GONE
+                btn_start_left.visibility = View.VISIBLE
+
+            },10000)
+
+            val mMessageListview = findViewById(R.id.message_listview_left) as ListView
+
+            mConversationArrayAdapter = ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1)
+            mMessageListview.adapter = mConversationArrayAdapter
+        }
+
+        when (num) {
+            // intent로 받아온 동작 num case
+            1 -> {
+                pic_left.setImageResource(R.drawable.norm__1)
+                name_left.setText(R.string.opt1)
+            }
+            2 -> {
+                pic_left.setImageResource(R.drawable.norm__2)
+                name_left.setText(R.string.opt2)
+            }
+            3 -> {
+                pic_left.setImageResource(R.drawable.norm__3)
+                name_left.setText(R.string.opt3)
+            }
+            4 -> {
+                pic_left.setImageResource(R.drawable.norm__4)
+                name_left.setText(R.string.opt4)
+            }
+            5 -> {
+                pic_left.setImageResource(R.drawable.norm__5)
+                name_left.setText(R.string.opt5)
+            }
+            6 -> {
+                pic_left.setImageResource(R.drawable.norm__6)
+                name_left.setText(R.string.opt6)
+            }
+            7 -> {
+                pic_left.setImageResource(R.drawable.norm__7)
+                name_left.setText(R.string.opt7)
+            }
+            8 -> {
+                pic_left.setImageResource(R.drawable.norm__8)
+                name_left.setText(R.string.opt8)
+            }
+            9 -> {
+                pic_left.setImageResource(R.drawable.norm__9)
+                name_left.setText(R.string.opt9)
+            }
+            10 -> {
+                pic_left.setImageResource(R.drawable.norm__10)
+                name_left.setText(R.string.opt10)
+            }
+            else -> {
+            }
+        }
+        return true
+    }
+
+    fun run_right(): Boolean {
+
+        btn_learning_right.visibility = View.GONE
+        mToolbar = findViewById<View>(R.id.toolbar_right) as Toolbar // 상단 틀바
+        mToolbar!!.setTitleTextColor(Color.parseColor("white"))
+        setSupportActionBar(mToolbar)
+
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
+
+        // 이미지들이 담긴 컨테이너
+        val vf = findViewById<View>(R.id.view_flipper_right) as ViewFlipper
+        vf.isEnabled = false
+        vf.setFlipInterval(1000)
+
+        num = intent.getIntExtra("NO",0)
+        // mBluetoothManager.setHandler(mBtHandler)
+
+        btn_start_right.setOnClickListener {
+            btn_start_right.visibility = View.GONE // start 버튼은 없어지고
+            btn_learning_right.visibility = View.VISIBLE
             vf.isEnabled = true
             vf.visibility = View.VISIBLE // timer는 나타내기
             vf.startFlipping()
@@ -106,16 +228,16 @@ class LearnActivity : AppCompatActivity() {
             val childCount = vf.childCount
 
             Handler().postDelayed({
-
                 vf.stopFlipping()
                 vf.displayedChild = 0
                 vf.isEnabled = false
                 vf.visibility = View.INVISIBLE
-                btn_start.visibility = View.VISIBLE
+                btn_learning_right.visibility = View.GONE
+                btn_start_left.visibility = View.VISIBLE
 
             },10000)
 
-            val mMessageListview = findViewById(R.id.message_listview) as ListView
+            val mMessageListview = findViewById(R.id.message_listview_right) as ListView
 
             mConversationArrayAdapter = ArrayAdapter(this,
                     android.R.layout.simple_list_item_1)
@@ -125,48 +247,49 @@ class LearnActivity : AppCompatActivity() {
         when (num) {
             // intent로 받아온 동작 num case
             1 -> {
-                pic.setImageResource(R.drawable.norm_1)
-                name.setText(R.string.opt1)
+                pic_right.setImageResource(R.drawable.norm_1)
+                name_right.setText(R.string.opt1)
             }
             2 -> {
-                pic.setImageResource(R.drawable.norm_2)
-                name.setText(R.string.opt2)
+                pic_right.setImageResource(R.drawable.norm_2)
+                name_right.setText(R.string.opt2)
             }
             3 -> {
-                pic.setImageResource(R.drawable.norm_3)
-                name.setText(R.string.opt3)
+                pic_right.setImageResource(R.drawable.norm_3)
+                name_right.setText(R.string.opt3)
             }
             4 -> {
-                pic.setImageResource(R.drawable.norm_4)
-                name.setText(R.string.opt4)
+                pic_right.setImageResource(R.drawable.norm_4)
+                name_right.setText(R.string.opt4)
             }
             5 -> {
-                pic.setImageResource(R.drawable.norm_5)
-                name.setText(R.string.opt5)
+                pic_right.setImageResource(R.drawable.norm_5)
+                name_right.setText(R.string.opt5)
             }
             6 -> {
-                pic.setImageResource(R.drawable.norm_6)
-                name.setText(R.string.opt6)
+                pic_right.setImageResource(R.drawable.norm_6)
+                name_right.setText(R.string.opt6)
             }
             7 -> {
-                pic.setImageResource(R.drawable.norm_7)
-                name.setText(R.string.opt7)
+                pic_right.setImageResource(R.drawable.norm_7)
+                name_right.setText(R.string.opt7)
             }
             8 -> {
-                pic.setImageResource(R.drawable.norm_8)
-                name.setText(R.string.opt8)
+                pic_right.setImageResource(R.drawable.norm_8)
+                name_right.setText(R.string.opt8)
             }
             9 -> {
-                pic.setImageResource(R.drawable.norm_9)
-                name.setText(R.string.opt9)
+                pic_right.setImageResource(R.drawable.norm_9)
+                name_right.setText(R.string.opt9)
             }
             10 -> {
-                pic.setImageResource(R.drawable.norm_10)
-                name.setText(R.string.opt10)
+                pic_right.setImageResource(R.drawable.norm_10)
+                name_right.setText(R.string.opt10)
             }
             else -> {
             }
         }
+        return true
     }
 
     inner class BluetoothHandler : Handler() { // emg 값 수신

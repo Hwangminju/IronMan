@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.mjhwa.ironman.MainActivity;
 import com.example.mjhwa.ironman.R;
@@ -42,7 +43,7 @@ import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.N
 public class LoginActivity extends AppCompatActivity {
 
     EditText etId, etPw;
-    String sId, sPw;
+    String sId, sPw, sLR;
     Button bt_login;
     private static String TAG = "phptest";
 
@@ -78,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     {
         public String id;
         public String data;
+        public String lr;
     }
 
     public class loginDB extends AsyncTask<String, Integer, MyInfo> {
@@ -153,10 +155,12 @@ public class LoginActivity extends AppCompatActivity {
 
                 String data = sb.toString().trim();
                 MyInfo myInfo = new MyInfo();
-                myInfo.data = data;
+                myInfo.data = data.substring(0,1);
                 myInfo.id = params[1];
+                Integer last = data.length();
+                myInfo.lr = data.substring(1, last);
 
-                if (myInfo.data.equals("1")) {
+                if (myInfo.data.charAt(0) == '1') {
                     Log.e("RESULT", "성공적으로 처리되었습니다!");
                 } else {
                     Log.e("RESULT", "에러 발생! ERRCODE = " + myInfo.data);
@@ -197,6 +201,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if(myInfo.data.equals("1"))
             {
+                Log.e("LR","LR is " + myInfo.lr);
                 Log.e("RESULT","로그인 성공!");
                 alertBuilder
                         .setTitle("알림")
@@ -209,6 +214,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.e("RESULT","Log In With ID : " + myInfo.id);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("ID", myInfo.id);
+                                intent.putExtra("LR", myInfo.lr);
+
                                 startActivity(intent);
                                 finish();
                             }

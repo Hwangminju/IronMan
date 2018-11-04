@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.view.View
+import android.widget.Toast
 
 import com.example.mjhwa.ironman.R
 import com.example.mjhwa.ironman.R.id.*
@@ -26,6 +27,9 @@ class NormalActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_normal)
 
+        val intent = getIntent()
+        val sLR:String = intent.getStringExtra("LR")
+
         mAuth = FirebaseAuth.getInstance()
 
         val listener = View.OnClickListener { view ->
@@ -44,6 +48,8 @@ class NormalActivity : Activity() {
             }
             val intent = Intent(this, LearnActivity::class.java)
             mBluetoothManager.write(no.toString().toByteArray())
+            intent.putExtra("LR", sLR)
+            Toast.makeText(this,"LR is " + sLR, Toast.LENGTH_LONG).show()
             intent.putExtra("NO", no)
             startActivity(intent)
         }

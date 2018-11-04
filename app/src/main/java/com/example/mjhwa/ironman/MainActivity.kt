@@ -43,10 +43,11 @@ class MainActivity : Activity() {
 
         val intent = getIntent()
         val sId:String = intent.getStringExtra("ID")
+        val sLR:String = intent.getStringExtra("LR")
 
         Logs.d(TAG, "# MainActivity - onCreate()")
-        if(currentUser != null) {
-            Toast.makeText(this, currentUser.email + "님, 환영합니다!",Toast.LENGTH_SHORT).show()
+        if(sId != null) {
+            Toast.makeText(this, sId + "님, 환영합니다!",Toast.LENGTH_SHORT).show()
         } // 로그인했을 때 토스트 메세지
 
         if(!checkBluetooth()) {
@@ -67,12 +68,15 @@ class MainActivity : Activity() {
         btNormal.setOnClickListener {
             val intent = Intent(this, NormalActivity::class.java)
             intent.putExtra("ID", sId)
+            intent.putExtra("LR", sLR)
             startActivity(intent)
             Toast.makeText(this, "일반 모드를 시작합니다.", Toast.LENGTH_SHORT).show()
         }
 
         btBarista.setOnClickListener {
             val intent = Intent(this, BaristaActivity::class.java)
+            intent.putExtra("ID", sId)
+            intent.putExtra("LR", sLR)
             startActivity(intent)
             Toast.makeText(this, "바리스타 모드를 시작합니다.", Toast.LENGTH_SHORT).show()
         }

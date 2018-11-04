@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.mjhwa.ironman.MainActivity;
@@ -35,8 +37,10 @@ import java.net.URL;
 public class JoinActivity extends AppCompatActivity {
 
     EditText et_id, et_pw, et_pw_chk;
-    String sId, sPw, sPw_chk;
+    String sId, sPw, sPw_chk, sLR;
     Button bt_Join;
+    RadioGroup rg_lr;
+    RadioButton rb_left, rb_right;
     private static String TAG = "phptest";
 
     @Override
@@ -47,6 +51,9 @@ public class JoinActivity extends AppCompatActivity {
         et_id = (EditText) findViewById(R.id.et_Id);
         et_pw = (EditText) findViewById(R.id.et_Password);
         et_pw_chk = (EditText) findViewById(R.id.et_Password_chk);
+        rg_lr = (RadioGroup) findViewById(R.id.rg_lr);
+        rb_left = (RadioButton) findViewById(R.id.rb_left);
+        rb_right = (RadioButton) findViewById(R.id.rb_right);
         bt_Join = (Button) findViewById(R.id.bt_Join);
 
         bt_Join.setOnClickListener(new View.OnClickListener() {
@@ -56,12 +63,17 @@ public class JoinActivity extends AppCompatActivity {
                     sId = et_id.getText().toString();
                     sPw = et_pw.getText().toString();
                     sPw_chk = et_pw_chk.getText().toString();
+                    if (rb_left.isChecked()) {
+                        sLR = "left";
+                    } else if (rb_right.isChecked()) {
+                        sLR = "right";
+                    }
 
                     if(sPw.equals(sPw_chk))
                     {
                         /* 패스워드 확인이 정상적으로 됨 */
                         registDB rdb = new registDB();
-                        rdb.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/join.php", sId, sPw);
+                        rdb.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/join.php", sId, sPw, sLR);
                     }
                     else
                     {
@@ -82,6 +94,7 @@ public class JoinActivity extends AppCompatActivity {
     {
         public String id;
         public String data;
+        public String lr;
     }
 
     public class registDB extends AsyncTask<String, Integer, MyInfo> {
@@ -92,9 +105,9 @@ public class JoinActivity extends AppCompatActivity {
         protected MyInfo doInBackground(String... params) {
 
             /* 인풋 파라메터값 생성 */
-            String param = "u_id=" + sId + "&u_pw=" + sPw + "";
+            String param = "u_id=" + sId + "&u_pw=" + sPw + "" + "&u_lr=" + sLR;
             String serverURL = params[0];
-            String postParameters = "u_id=" + params[1] + "&u_pw=" + params[2] + "";
+            String postParameters = "u_id=" + params[1] + "&u_pw=" + params[2] + "&u_lr" + params[3] + "";
             Log.e("POST", postParameters);
 
             try {
@@ -149,8 +162,9 @@ public class JoinActivity extends AppCompatActivity {
                 MyInfo myInfo = new MyInfo();
                 myInfo.data = data;
                 myInfo.id = params[1];
+                myInfo.lr = params[2];
 
-                Log.e("myInfo", myInfo.id + "/ " + myInfo.data);
+                Log.e("myInfo", myInfo.id + " / " + myInfo.data + " / " + myInfo.lr);
                 if (myInfo.data.equals("1")) {
                     Log.e("RESULT", "성공적으로 처리되었습니다!");
                 } else {
@@ -174,6 +188,7 @@ public class JoinActivity extends AppCompatActivity {
             try{
                 jsonObject.put("u_id", sId);
                 jsonObject.put("u_pw", sPw);
+                jsonObject.put("u_lr", sLR);
             } catch (JSONException e){
                 e.printStackTrace();
             }
