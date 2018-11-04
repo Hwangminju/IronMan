@@ -107,7 +107,7 @@ public class JoinActivity extends AppCompatActivity {
             /* 인풋 파라메터값 생성 */
             String param = "u_id=" + sId + "&u_pw=" + sPw + "" + "&u_lr=" + sLR;
             String serverURL = params[0];
-            String postParameters = "u_id=" + params[1] + "&u_pw=" + params[2] + "&u_lr" + params[3] + "";
+            String postParameters = "u_id=" + params[1] + "&u_pw=" + params[2] + "&u_lr=" + params[3] + "";
             Log.e("POST", postParameters);
 
             try {

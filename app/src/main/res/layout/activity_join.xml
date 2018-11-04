@@ -123,7 +123,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="왼쪽 의수 사용"
+                android:text="오른쪽 의수 사용"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
@@ -134,7 +134,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="오른쪽 의수 사용"
+                android:text="왼쪽 의수 사용"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
