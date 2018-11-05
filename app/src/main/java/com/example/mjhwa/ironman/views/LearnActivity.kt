@@ -1,6 +1,5 @@
 package com.example.mjhwa.ironman.views
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -9,30 +8,22 @@ import android.view.View
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.bluetooth.BluetoothAdapter
 import android.os.AsyncTask
 import android.os.Message
 import android.util.Log
 
 import com.example.mjhwa.ironman.R
 import com.example.mjhwa.ironman.bluetooth.BluetoothManager
-import kotlinx.android.synthetic.main.activity_learn.*
 import kotlinx.android.synthetic.main.activity_learn_left.*
 import kotlinx.android.synthetic.main.activity_learn_right.*
 import java.net.HttpURLConnection
-import java.net.MalformedURLException
 import java.net.URL
 import java.nio.charset.Charset
-import android.app.Application
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothSocket
-import android.content.*
 import android.widget.*
 import com.example.mjhwa.ironman.R.layout.activity_learn_left
 import com.example.mjhwa.ironman.R.layout.activity_learn_right
 import java.io.*
 import java.util.*
-import kotlin.text.Charsets.UTF_8
 
 class LearnActivity : AppCompatActivity() {
 
@@ -138,43 +129,43 @@ class LearnActivity : AppCompatActivity() {
         when (num) {
             // intent로 받아온 동작 num case
             1 -> {
-                pic_left.setImageResource(R.drawable.norm__1)
+                pic_left.setImageResource(R.drawable.norm1)
                 name_left.setText(R.string.opt1)
             }
             2 -> {
-                pic_left.setImageResource(R.drawable.norm__2)
+                pic_left.setImageResource(R.drawable.norm2)
                 name_left.setText(R.string.opt2)
             }
             3 -> {
-                pic_left.setImageResource(R.drawable.norm__3)
+                pic_left.setImageResource(R.drawable.norm3)
                 name_left.setText(R.string.opt3)
             }
             4 -> {
-                pic_left.setImageResource(R.drawable.norm__4)
+                pic_left.setImageResource(R.drawable.norm4)
                 name_left.setText(R.string.opt4)
             }
             5 -> {
-                pic_left.setImageResource(R.drawable.norm__5)
+                pic_left.setImageResource(R.drawable.norm5)
                 name_left.setText(R.string.opt5)
             }
             6 -> {
-                pic_left.setImageResource(R.drawable.norm__6)
+                pic_left.setImageResource(R.drawable.norm6)
                 name_left.setText(R.string.opt6)
             }
             7 -> {
-                pic_left.setImageResource(R.drawable.norm__7)
+                pic_left.setImageResource(R.drawable.norm7)
                 name_left.setText(R.string.opt7)
             }
             8 -> {
-                pic_left.setImageResource(R.drawable.norm__8)
+                pic_left.setImageResource(R.drawable.norm8)
                 name_left.setText(R.string.opt8)
             }
             9 -> {
-                pic_left.setImageResource(R.drawable.norm__9)
+                pic_left.setImageResource(R.drawable.norm9)
                 name_left.setText(R.string.opt9)
             }
             10 -> {
-                pic_left.setImageResource(R.drawable.norm__10)
+                pic_left.setImageResource(R.drawable.norm10)
                 name_left.setText(R.string.opt10)
             }
             else -> {
@@ -213,7 +204,7 @@ class LearnActivity : AppCompatActivity() {
             }
 
             // mBluetoothManager.write("0".toByteArray())
-            // mBluetoothManager.setHandler(mBtHandler)
+            mBluetoothManager.setHandler(mBtHandler)
 
             /*
             try {
@@ -233,7 +224,7 @@ class LearnActivity : AppCompatActivity() {
                 vf.isEnabled = false
                 vf.visibility = View.INVISIBLE
                 btn_learning_right.visibility = View.GONE
-                btn_start_left.visibility = View.VISIBLE
+                btn_start_right.visibility = View.VISIBLE
 
             },10000)
 
@@ -247,43 +238,43 @@ class LearnActivity : AppCompatActivity() {
         when (num) {
             // intent로 받아온 동작 num case
             1 -> {
-                pic_right.setImageResource(R.drawable.norm_1)
+                pic_right.setImageResource(R.drawable.norm1)
                 name_right.setText(R.string.opt1)
             }
             2 -> {
-                pic_right.setImageResource(R.drawable.norm_2)
+                pic_right.setImageResource(R.drawable.norm2)
                 name_right.setText(R.string.opt2)
             }
             3 -> {
-                pic_right.setImageResource(R.drawable.norm_3)
+                pic_right.setImageResource(R.drawable.norm3)
                 name_right.setText(R.string.opt3)
             }
             4 -> {
-                pic_right.setImageResource(R.drawable.norm_4)
+                pic_right.setImageResource(R.drawable.norm4)
                 name_right.setText(R.string.opt4)
             }
             5 -> {
-                pic_right.setImageResource(R.drawable.norm_5)
+                pic_right.setImageResource(R.drawable.norm5)
                 name_right.setText(R.string.opt5)
             }
             6 -> {
-                pic_right.setImageResource(R.drawable.norm_6)
+                pic_right.setImageResource(R.drawable.norm6)
                 name_right.setText(R.string.opt6)
             }
             7 -> {
-                pic_right.setImageResource(R.drawable.norm_7)
+                pic_right.setImageResource(R.drawable.norm7)
                 name_right.setText(R.string.opt7)
             }
             8 -> {
-                pic_right.setImageResource(R.drawable.norm_8)
+                pic_right.setImageResource(R.drawable.norm8)
                 name_right.setText(R.string.opt8)
             }
             9 -> {
-                pic_right.setImageResource(R.drawable.norm_9)
+                pic_right.setImageResource(R.drawable.norm9)
                 name_right.setText(R.string.opt9)
             }
             10 -> {
-                pic_right.setImageResource(R.drawable.norm_10)
+                pic_right.setImageResource(R.drawable.norm10)
                 name_right.setText(R.string.opt10)
             }
             else -> {
