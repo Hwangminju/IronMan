@@ -53,4 +53,8 @@ object ConnectionInfo {
         deviceName = null
     }
 
+    fun getName() : String {
+        return deviceName!!
+    }
+
 }

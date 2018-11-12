@@ -195,6 +195,91 @@
                 android:paddingVertical="15dp"
                 android:text="@string/opt10" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm__11"
+                android:lineSpacingExtra="5dp"
+                android:paddingStart="50dp"
+                android:paddingEnd="0dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt11" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm__12"
+                android:lineSpacingExtra="5dp"
+                android:paddingStart="50dp"
+                android:paddingEnd="0dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt12" />
+
+            <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm__13"
+                android:lineSpacingExtra="5dp"
+                android:paddingStart="50dp"
+                android:paddingEnd="0dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt13" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm__14"
+                android:lineSpacingExtra="5dp"
+                android:paddingStart="50dp"
+                android:paddingEnd="0dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt14" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/norm15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_shape"
+                android:drawablePadding="-40dp"
+                android:drawableStart="@drawable/norm__15"
+                android:lineSpacingExtra="5dp"
+                android:paddingStart="50dp"
+                android:paddingEnd="0dp"
+                android:paddingVertical="15dp"
+                android:text="@string/opt15" />
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

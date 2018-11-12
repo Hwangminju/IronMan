@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     String sId, sPw, sLR;
     Button bt_login;
     private static String TAG = "phptest";
+    String ON_TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,5 +259,39 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.show();
             }
         }
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(ON_TAG,"onStart");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(ON_TAG,"onResume");
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(ON_TAG,"onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(ON_TAG,"onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(ON_TAG,"onDestory");
     }
 }

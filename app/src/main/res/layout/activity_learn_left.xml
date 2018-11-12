@@ -151,30 +151,42 @@
                 </ViewFlipper>
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/grayd" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:hint="VOICE"
+                android:background="@color/grayd"
+                android:gravity="center"
+                android:padding="5dp"
+                android:id="@+id/tv_voice_left"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="30dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
-                    android:layout_marginHorizontal="7dp"
+                    android:layout_marginHorizontal="10dp"
                     android:background="@color/grayd" />
 
-                <ListView
-                    android:id="@+id/message_listview_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <!--TextView
-                    android:id="@+id/tv_emg"
+                <TextView
+                    android:id="@+id/tv_emg_left"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="EMG"
-                    android:textSize="20sp" /-->
+                    android:textSize="20sp" />
 
             </LinearLayout>
 

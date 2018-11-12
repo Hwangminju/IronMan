@@ -67,9 +67,30 @@
     <string name="opt5">5번 손동작 :\n<font size="20">빵야!</font></string>
     <string name="opt6">6번 손동작 :\n<font size="20">셋 표시</font></string>
     <string name="opt7">7번 손동작 :\n<font size="20">넷 표시</font></string>
-    <string name="opt8">8번 손동작 :\n<font size="20">브이 표</font></string>
+    <string name="opt8">8번 손동작 :\n<font size="20">브이 표시</font></string>
     <string name="opt9">9번 손동작 :\n<font size="20">전화기 표시</font></string>
     <string name="opt10">10번 손동작 :\n<font size="20">검지 펴기</font></string>
+    <string name="opt11">11번 손동작 :\n<font size="20">긁는 모양</font></string>
+    <string name="opt12">12번 손동작 :\n<font size="20">오므리기</font></string>
+    <string name="opt13">13번 손동작 :\n<font size="20">누르기</font></string>
+    <string name="opt14">14번 손동작 :\n<font size="20">OK 준비</font></string>
+    <string name="opt15">15번 손동작 :\n<font size="20">물건 받기</font></string>
+
+    <string name="b_opt1">1번 손동작 :\n<font size="20">긁는 모양</font></string>
+    <string name="b_opt2">2번 손동작 :\n<font size="20">누르기</font></string>
+    <string name="b_opt3">3번 손동작 :\n<font size="20">엄지 척!</font></string>
+    <string name="b_opt4">4번 손동작 :\n<font size="20">오므리기</font></string>
+    <string name="b_opt5">5번 손동작 :\n<font size="20">손 딱 붙이기</font></string>
+    <string name="b_opt6">6번 손동작 :\n<font size="20">주먹 쥐기</font></string>
+    <string name="b_opt7">7번 손동작 :\n<font size="20">검지 펴기</font></string>
+    <string name="b_opt8">8번 손동작 :\n<font size="20">셋 표시</font></string>
+    <string name="b_opt9">9번 손동작 :\n<font size="20">넷 표시</font></string>
+    <string name="b_opt10">10번 손동작 :\n<font size="20">OK 준비</font></string>
+    <string name="b_opt11">11번 손동작 :\n<font size="20">새끼손가락 접기</font></string>
+    <string name="b_opt12">12번 손동작 :\n<font size="20">오므리기</font></string>
+    <string name="b_opt13">13번 손동작 :\n<font size="20">보자기 손</font></string>
+    <string name="b_opt14">14번 손동작 :\n<font size="20">전화기 표시</font></string>
+    <string name="b_opt15">15번 손동작 :\n<font size="20">OK 표시</font></string>
 
     <!-- Menu items -->
     <string name="menu_connect">Connect</string>

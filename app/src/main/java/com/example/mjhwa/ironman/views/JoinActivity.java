@@ -42,6 +42,7 @@ public class JoinActivity extends AppCompatActivity {
     RadioGroup rg_lr;
     RadioButton rb_left, rb_right;
     private static String TAG = "phptest";
+    String ON_TAG = "JoinActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -266,6 +267,39 @@ public class JoinActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(ON_TAG,"onStart");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(ON_TAG,"onResume");
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(ON_TAG,"onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(ON_TAG,"onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(ON_TAG,"onDestory");
     }
 
 }

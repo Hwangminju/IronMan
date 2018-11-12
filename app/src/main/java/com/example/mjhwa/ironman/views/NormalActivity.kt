@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 
@@ -20,6 +21,7 @@ class NormalActivity : Activity() {
     private var mAuth: FirebaseAuth? = null
     // 현재 로그인된 유저 정보를 담을 변수
     private val currentUser: FirebaseUser? = null
+    val TAG = "NormalActivity"
 
     private val mBluetoothManager: BluetoothManager = BluetoothManager.getInstance()
 
@@ -44,6 +46,11 @@ class NormalActivity : Activity() {
                 R.id.norm8 -> 8
                 R.id.norm9 -> 9
                 R.id.norm10 -> 10
+                R.id.norm11 -> 11
+                R.id.norm12 -> 12
+                R.id.norm13 -> 13
+                R.id.norm14 -> 14
+                R.id.norm15 -> 15
                 else -> 0
             }
             val intent = Intent(this, LearnActivity::class.java)
@@ -64,6 +71,39 @@ class NormalActivity : Activity() {
         norm8.setOnClickListener(listener)
         norm9.setOnClickListener(listener)
         norm10.setOnClickListener(listener)
+        norm11.setOnClickListener(listener)
+        norm12.setOnClickListener(listener)
+        norm13.setOnClickListener(listener)
+        norm14.setOnClickListener(listener)
+        norm15.setOnClickListener(listener)
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i(TAG, "onStart")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i(TAG, "onResume")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i(TAG, "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i(TAG, "onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "onDestory")
+    }
+
 
 }

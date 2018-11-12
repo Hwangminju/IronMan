@@ -549,6 +549,7 @@ class BluetoothManager {
         fun write(buffer: ByteArray) {
             try {
                 mmOutStream!!.write(buffer)
+                mmOutStream!!.flush()
 
                 // Disabled: Share the sent message back to the main thread
                 // mHandler.obtainMessage(Constants.MESSAGE_WRITE, -1, -1, buffer)

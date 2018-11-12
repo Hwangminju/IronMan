@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.v4.app.ActivityCompat
+import android.util.Log
 import android.widget.Toast
 import com.example.mjhwa.ironman.R.layout.activity_main
 import com.example.mjhwa.ironman.bluetooth.BluetoothManager
@@ -332,4 +333,27 @@ class MainActivity : Activity() {
             }
         }    // End of switch(requestCode)
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i(TAG, "onStart")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i(TAG, "onResume")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i(TAG, "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i(TAG, "onStop")
+    }
+
 }

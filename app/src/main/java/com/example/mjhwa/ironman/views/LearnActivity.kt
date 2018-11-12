@@ -10,7 +10,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.os.AsyncTask
 import android.os.Message
+import android.speech.SpeechRecognizer
 import android.util.Log
+import android.Manifest;
+import android.content.Intent
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
 
 import com.example.mjhwa.ironman.R
 import com.example.mjhwa.ironman.bluetooth.BluetoothManager
@@ -22,6 +27,11 @@ import java.nio.charset.Charset
 import android.widget.*
 import com.example.mjhwa.ironman.R.layout.activity_learn_left
 import com.example.mjhwa.ironman.R.layout.activity_learn_right
+import com.example.mjhwa.ironman.bluetooth.ConnectionInfo
+import com.google.firebase.database.ThrowOnExtraProperties
+import kotlinx.android.synthetic.main.activity_learn_left.*
+import kotlinx.android.synthetic.main.activity_learn_right.*
+import org.w3c.dom.Text
 import java.io.*
 import java.util.*
 
@@ -34,20 +44,42 @@ class LearnActivity : AppCompatActivity() {
 
     private val TAG = "phptest"
     private val TAG_BT = "BluetoothClient"
+    private val ON_TAG = "LearnActivity"
     private var mConversationArrayAdapter: ArrayAdapter<String>? = null
 
     private val timer: Timer? = null
     private var mToolbar: Toolbar? = null
+    private lateinit var deviceName: String
+
+    init {
+        Manifest.permission.RECORD_AUDIO
+    }
+    private val MY_PERMISSIONS_RECORD_AUDIO: kotlin.Int? = 1
 
     var id : String? = null
     var lr : String? = null
     var num : Int? = 0
 
+    var text: String? = null // 음성 인식 텍스트
+
     internal val uploadFilePath = "/data/data/com.example.mjhwa.ironman/databases/"
     internal val uploadFileName = "data.txt" // 전송하고자 하는 파일 이름
+    internal var i: Intent? = null
+    internal var mRecognizer: SpeechRecognizer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // deviceName = ConnectionInfo.getName()
+
+        i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        i!!.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
+        i!!.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
+
+        // mRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+        // mRecognizer!!.setRecognitionListener(listener)
+
+        mBluetoothManager.setHandler(mBtHandler)
 
         val intent = getIntent()
         id = intent.getStringExtra("ID")
@@ -59,8 +91,6 @@ class LearnActivity : AppCompatActivity() {
             setContentView(activity_learn_right)
         }
 
-        mBluetoothManager.setHandler(mBtHandler)
-
         if (lr == "left")
             run_left()
         else if (lr == "right")
@@ -68,6 +98,8 @@ class LearnActivity : AppCompatActivity() {
     }
 
     fun run_left(): Boolean {
+
+        tv_voice_left.setText("10초 동안 그림 속 손동작을 유지해 주세요.")
 
         btn_learning_left.visibility = View.GONE
         mToolbar = findViewById<View>(R.id.toolbar_left) as Toolbar // 상단 틀바
@@ -82,7 +114,6 @@ class LearnActivity : AppCompatActivity() {
         vf.setFlipInterval(1000)
 
         num = intent.getIntExtra("NO",0)
-        // mBluetoothManager.setHandler(mBtHandler)
 
         btn_start_left.setOnClickListener {
             btn_start_left.visibility = View.GONE // start 버튼은 없어지고
@@ -90,13 +121,14 @@ class LearnActivity : AppCompatActivity() {
             vf.isEnabled = true
             vf.startFlipping()
 
-            val sendMessage = "start"
-            if (sendMessage.length > 0) {
-                mBluetoothManager.write(sendMessage.toByteArray())
+            try {
+                val sendMessage = "start"
+                if (sendMessage.length > 0) {
+                    mBluetoothManager.write(sendMessage.toByteArray())
+                }
+            } catch (e: IOException) {
+                Log.e(TAG, "Message cannot be sent", e);
             }
-
-            // mBluetoothManager.write("0".toByteArray())
-            // mBluetoothManager.setHandler(mBtHandler)
 
             /*
             try {
@@ -119,11 +151,6 @@ class LearnActivity : AppCompatActivity() {
 
             },10000)
 
-            val mMessageListview = findViewById(R.id.message_listview_left) as ListView
-
-            mConversationArrayAdapter = ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1)
-            mMessageListview.adapter = mConversationArrayAdapter
         }
 
         when (num) {
@@ -168,6 +195,26 @@ class LearnActivity : AppCompatActivity() {
                 pic_left.setImageResource(R.drawable.norm10)
                 name_left.setText(R.string.opt10)
             }
+            11 -> {
+                pic_left.setImageResource(R.drawable.norm11)
+                name_left.setText(R.string.opt11)
+            }
+            12 -> {
+                pic_left.setImageResource(R.drawable.norm12)
+                name_left.setText(R.string.opt12)
+            }
+            13 -> {
+                pic_left.setImageResource(R.drawable.norm13)
+                name_left.setText(R.string.opt13)
+            }
+            14 -> {
+                pic_left.setImageResource(R.drawable.norm14)
+                name_left.setText(R.string.opt14)
+            }
+            15 -> {
+                pic_left.setImageResource(R.drawable.norm15)
+                name_left.setText(R.string.opt15)
+            }
             else -> {
             }
         }
@@ -175,6 +222,8 @@ class LearnActivity : AppCompatActivity() {
     }
 
     fun run_right(): Boolean {
+
+        tv_voice_right.setText("10초 동안 그림 속 손동작을 유지해 주세요.")
 
         btn_learning_right.visibility = View.GONE
         mToolbar = findViewById<View>(R.id.toolbar_right) as Toolbar // 상단 틀바
@@ -198,13 +247,14 @@ class LearnActivity : AppCompatActivity() {
             vf.visibility = View.VISIBLE // timer는 나타내기
             vf.startFlipping()
 
-            val sendMessage = "start"
-            if (sendMessage.length > 0) {
-                mBluetoothManager.write(sendMessage.toByteArray())
+            try {
+                val sendMessage = "start"
+                if (sendMessage.length > 0) {
+                    mBluetoothManager.write(sendMessage.toByteArray())
+                }
+            } catch (e: IOException) {
+                Log.e(TAG, "Message cannot be sent", e);
             }
-
-            // mBluetoothManager.write("0".toByteArray())
-            mBluetoothManager.setHandler(mBtHandler)
 
             /*
             try {
@@ -228,11 +278,6 @@ class LearnActivity : AppCompatActivity() {
 
             },10000)
 
-            val mMessageListview = findViewById(R.id.message_listview_right) as ListView
-
-            mConversationArrayAdapter = ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1)
-            mMessageListview.adapter = mConversationArrayAdapter
         }
 
         when (num) {
@@ -277,6 +322,26 @@ class LearnActivity : AppCompatActivity() {
                 pic_right.setImageResource(R.drawable.norm10)
                 name_right.setText(R.string.opt10)
             }
+            11 -> {
+                pic_left.setImageResource(R.drawable.norm11)
+                name_left.setText(R.string.opt11)
+            }
+            12 -> {
+                pic_left.setImageResource(R.drawable.norm12)
+                name_left.setText(R.string.opt12)
+            }
+            13 -> {
+                pic_left.setImageResource(R.drawable.norm13)
+                name_left.setText(R.string.opt13)
+            }
+            14 -> {
+                pic_left.setImageResource(R.drawable.norm14)
+                name_left.setText(R.string.opt14)
+            }
+            15 -> {
+                pic_left.setImageResource(R.drawable.norm15)
+                name_left.setText(R.string.opt15)
+            }
             else -> {
             }
         }
@@ -289,12 +354,22 @@ class LearnActivity : AppCompatActivity() {
                 BluetoothManager.MESSAGE_READ -> {
 
                     if (msg.obj != null) {
-                        val currentTime = System.currentTimeMillis()
-                        if (mPrevUpdateTime + 10 <= currentTime) {
-                            // tv_emg.append("\n")
-                            Log.e("Read EMG", "Reading EMG Sensors")
-                            mConversationArrayAdapter!!.insert((msg.obj as ByteArray).toString(Charset.defaultCharset()),0)
-                            mPrevUpdateTime = currentTime
+                        if (lr == "left") {
+                            val currentTime = System.currentTimeMillis()
+                            if (mPrevUpdateTime + 10 <= currentTime) {
+                                Log.e("Read EMG", "Reading EMG Sensors")
+                                tv_emg_left.append("\n")
+                                mPrevUpdateTime = currentTime
+                            }
+                            tv_emg_left.append((msg.obj as ByteArray).toString(Charset.defaultCharset()))
+                        } else if (lr == "right") {
+                            val currentTime = System.currentTimeMillis()
+                            if (mPrevUpdateTime + 10 <= currentTime) {
+                                Log.e("Read EMG", "Reading EMG Sensors")
+                                tv_emg_right.append("\n")
+                                mPrevUpdateTime = currentTime
+                            }
+                            tv_emg_right.append((msg.obj as ByteArray).toString(Charset.defaultCharset()))
                         }
                     }
                 }
@@ -405,4 +480,30 @@ class LearnActivity : AppCompatActivity() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.i(ON_TAG, "onStart")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i(ON_TAG, "onResume")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i(ON_TAG, "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i(ON_TAG, "onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(ON_TAG, "onDestory")
+    }
 }
