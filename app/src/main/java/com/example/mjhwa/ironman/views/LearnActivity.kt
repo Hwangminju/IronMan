@@ -14,8 +14,6 @@ import android.speech.SpeechRecognizer
 import android.util.Log
 import android.Manifest;
 import android.content.Intent
-import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
 
 import com.example.mjhwa.ironman.R
 import com.example.mjhwa.ironman.bluetooth.BluetoothManager
@@ -29,6 +27,7 @@ import com.example.mjhwa.ironman.R.layout.activity_learn_left
 import com.example.mjhwa.ironman.R.layout.activity_learn_right
 import com.example.mjhwa.ironman.bluetooth.ConnectionInfo
 import com.google.firebase.database.ThrowOnExtraProperties
+import com.opencsv.CSVReader
 import kotlinx.android.synthetic.main.activity_learn_left.*
 import kotlinx.android.synthetic.main.activity_learn_right.*
 import org.w3c.dom.Text
@@ -71,13 +70,6 @@ class LearnActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // deviceName = ConnectionInfo.getName()
-
-        i = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        i!!.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
-        i!!.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
-
-        // mRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
-        // mRecognizer!!.setRecognitionListener(listener)
 
         mBluetoothManager.setHandler(mBtHandler)
 
@@ -125,19 +117,18 @@ class LearnActivity : AppCompatActivity() {
                 val sendMessage = "start"
                 if (sendMessage.length > 0) {
                     mBluetoothManager.write(sendMessage.toByteArray())
+
+                    when (num) {
+                        1 -> parsing_data_left("gesture1.csv")
+                        2 -> parsing_data_left("gesture2.csv")
+                        3 -> parsing_data_left("gesture3.csv")
+                        4 -> parsing_data_left("gesture4.csv")
+                        5 -> parsing_data_left("gesture5.csv")
+                    }
                 }
             } catch (e: IOException) {
                 Log.e(TAG, "Message cannot be sent", e);
             }
-
-            /*
-            try {
-                val lDB = InsertDB()
-                lDB.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/login.php",
-                        158, 200, 25, num.toString(), id)
-            } catch (e: NullPointerException) {
-                Log.e("err", e.message)
-            }*/
 
             val displayedChild = vf.displayedChild
             val childCount = vf.childCount
@@ -215,10 +206,97 @@ class LearnActivity : AppCompatActivity() {
                 pic_left.setImageResource(R.drawable.norm15)
                 name_left.setText(R.string.opt15)
             }
+            16 -> {
+                pic_left.setImageResource(R.drawable.bari1)
+                name_left.setText(R.string.b_opt1)
+            }
+            17 -> {
+                pic_left.setImageResource(R.drawable.bari2)
+                name_left.setText(R.string.b_opt2)
+            }
+            18 -> {
+                pic_left.setImageResource(R.drawable.bari3)
+                name_left.setText(R.string.b_opt3)
+            }
+            19 -> {
+                pic_left.setImageResource(R.drawable.bari4)
+                name_left.setText(R.string.b_opt4)
+            }
+            20 -> {
+                pic_left.setImageResource(R.drawable.bari5)
+                name_left.setText(R.string.b_opt5)
+            }
+            21 -> {
+                pic_left.setImageResource(R.drawable.bari6)
+                name_left.setText(R.string.b_opt6)
+            }
+            22 -> {
+                pic_left.setImageResource(R.drawable.bari7)
+                name_left.setText(R.string.b_opt7)
+            }
+            23 -> {
+                pic_left.setImageResource(R.drawable.bari8)
+                name_left.setText(R.string.b_opt8)
+            }
+            24 -> {
+                pic_left.setImageResource(R.drawable.bari9)
+                name_left.setText(R.string.b_opt9)
+            }
+            25 -> {
+                pic_left.setImageResource(R.drawable.bari10)
+                name_left.setText(R.string.b_opt10)
+            }
+            26 -> {
+                pic_left.setImageResource(R.drawable.bari11)
+                name_left.setText(R.string.b_opt11)
+            }
+            27 -> {
+                pic_left.setImageResource(R.drawable.bari12)
+                name_left.setText(R.string.b_opt12)
+            }
+            28 -> {
+                pic_left.setImageResource(R.drawable.bari13)
+                name_left.setText(R.string.b_opt13)
+            }
+            29 -> {
+                pic_left.setImageResource(R.drawable.bari14)
+                name_left.setText(R.string.b_opt14)
+            }
+            30 -> {
+                pic_left.setImageResource(R.drawable.bari15)
+                name_left.setText(R.string.b_opt15)
+            }
             else -> {
             }
         }
         return true
+    }
+
+    fun parsing_data_left(file_name: String) {
+        var fileReader: BufferedReader? = null
+        var csvReader: CSVReader? = null
+
+        try {
+            fileReader = BufferedReader(FileReader(file_name))
+            csvReader = CSVReader(fileReader)
+
+            var nextLine:Array<String>?
+            csvReader.readNext()
+
+            nextLine = csvReader.readNext()
+
+            while (nextLine != null)
+            {
+                tv_emg_left.append(nextLine[0] +
+                        " | " + nextLine[1] + " | " + nextLine[2] + "\n")
+                nextLine = csvReader.readNext()
+            }
+
+            csvReader.close()
+
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
     }
 
     fun run_right(): Boolean {
@@ -251,19 +329,18 @@ class LearnActivity : AppCompatActivity() {
                 val sendMessage = "start"
                 if (sendMessage.length > 0) {
                     mBluetoothManager.write(sendMessage.toByteArray())
+
+                    when (num) {
+                        1 -> parsing_data_right("gesture1.csv")
+                        2 -> parsing_data_right("gesture2.csv")
+                        3 -> parsing_data_right("gesture3.csv")
+                        4 -> parsing_data_right("gesture4.csv")
+                        5 -> parsing_data_right("gesture5.csv")
+                    }
                 }
             } catch (e: IOException) {
                 Log.e(TAG, "Message cannot be sent", e);
             }
-
-            /*
-            try {
-                val lDB = InsertDB()
-                lDB.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/login.php",
-                        158, 200, 25, num.toString(), id)
-            } catch (e: NullPointerException) {
-                Log.e("err", e.message)
-            }*/
 
             val displayedChild = vf.displayedChild
             val childCount = vf.childCount
@@ -324,23 +401,83 @@ class LearnActivity : AppCompatActivity() {
             }
             11 -> {
                 pic_left.setImageResource(R.drawable.norm11)
-                name_left.setText(R.string.opt11)
+                name_right.setText(R.string.opt11)
             }
             12 -> {
                 pic_left.setImageResource(R.drawable.norm12)
-                name_left.setText(R.string.opt12)
+                name_right.setText(R.string.opt12)
             }
             13 -> {
                 pic_left.setImageResource(R.drawable.norm13)
-                name_left.setText(R.string.opt13)
+                name_right.setText(R.string.opt13)
             }
             14 -> {
                 pic_left.setImageResource(R.drawable.norm14)
-                name_left.setText(R.string.opt14)
+                name_right.setText(R.string.opt14)
             }
             15 -> {
                 pic_left.setImageResource(R.drawable.norm15)
-                name_left.setText(R.string.opt15)
+                name_right.setText(R.string.opt15)
+            }
+            16 -> {
+                pic_left.setImageResource(R.drawable.bari1)
+                name_right.setText(R.string.b_opt1)
+            }
+            17 -> {
+                pic_left.setImageResource(R.drawable.bari2)
+                name_right.setText(R.string.b_opt2)
+            }
+            18 -> {
+                pic_left.setImageResource(R.drawable.bari3)
+                name_right.setText(R.string.b_opt3)
+            }
+            19 -> {
+                pic_left.setImageResource(R.drawable.bari4)
+                name_right.setText(R.string.b_opt4)
+            }
+            20 -> {
+                pic_left.setImageResource(R.drawable.bari5)
+                name_right.setText(R.string.b_opt5)
+            }
+            21 -> {
+                pic_left.setImageResource(R.drawable.bari6)
+                name_right.setText(R.string.b_opt6)
+            }
+            22 -> {
+                pic_left.setImageResource(R.drawable.bari7)
+                name_right.setText(R.string.b_opt7)
+            }
+            23 -> {
+                pic_left.setImageResource(R.drawable.bari8)
+                name_right.setText(R.string.b_opt8)
+            }
+            24 -> {
+                pic_left.setImageResource(R.drawable.bari9)
+                name_right.setText(R.string.b_opt9)
+            }
+            25 -> {
+                pic_left.setImageResource(R.drawable.bari10)
+                name_right.setText(R.string.b_opt10)
+            }
+            26 -> {
+                pic_left.setImageResource(R.drawable.bari11)
+                name_right.setText(R.string.b_opt11)
+            }
+            27 -> {
+                pic_left.setImageResource(R.drawable.bari12)
+                name_right.setText(R.string.b_opt12)
+            }
+            28 -> {
+                pic_left.setImageResource(R.drawable.bari13)
+                name_right.setText(R.string.b_opt13)
+            }
+            29 -> {
+                pic_left.setImageResource(R.drawable.bari14)
+                name_right.setText(R.string.b_opt14)
+            }
+            30 -> {
+                pic_left.setImageResource(R.drawable.bari15)
+                name_right.setText(R.string.b_opt15)
             }
             else -> {
             }
@@ -348,8 +485,41 @@ class LearnActivity : AppCompatActivity() {
         return true
     }
 
+    fun parsing_data_right(file_name: String) {
+        var fileReader: BufferedReader? = null
+        var csvReader: CSVReader? = null
+
+        try {
+            fileReader = BufferedReader(FileReader(file_name))
+            csvReader = CSVReader(fileReader)
+
+            var nextLine:Array<String>?
+            csvReader.readNext()
+
+            nextLine = csvReader.readNext()
+
+            while (nextLine != null)
+            {
+                tv_emg_right.append(nextLine[0] +
+                        " | " + nextLine[1] + " | " + nextLine[2] + "\n")
+                nextLine = csvReader.readNext()
+            }
+
+            csvReader.close()
+
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
     inner class BluetoothHandler : Handler() { // emg 값 수신
         override fun handleMessage(msg: Message) {
+
+            var st : String? = null
+            var emg1 : Int? = null
+            var emg2 : Int? = null
+            var emg3 : Int? = null
+
             when (msg.what) {
                 BluetoothManager.MESSAGE_READ -> {
 
@@ -362,6 +532,20 @@ class LearnActivity : AppCompatActivity() {
                                 mPrevUpdateTime = currentTime
                             }
                             tv_emg_left.append((msg.obj as ByteArray).toString(Charset.defaultCharset()))
+
+                            st = (msg.obj as ByteArray).toString()
+                            var emg_list = st.split(" ")
+
+                            /*
+                            try {
+                                val lDB = InsertDB()
+                                lDB.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/login.php",
+                                        emg_list[0], emg_list[1], emg_list[2], num.toString(), id)
+                            } catch (e: NullPointerException) {
+                                Log.e("err", e.message)
+                            }
+                            */
+
                         } else if (lr == "right") {
                             val currentTime = System.currentTimeMillis()
                             if (mPrevUpdateTime + 10 <= currentTime) {

@@ -44,21 +44,21 @@ class BaristaActivity : Activity() {
 
         val listener = View.OnClickListener { view ->
             val no = when (view.id) {
-                R.id.bari1 -> 1
-                R.id.bari2 -> 2
-                R.id.bari3 -> 3
-                R.id.bari4 -> 4
-                R.id.bari5 -> 5
-                R.id.bari6 -> 6
-                R.id.bari7 -> 7
-                R.id.bari8 -> 8
-                R.id.bari9 -> 9
-                R.id.bari10 -> 10
-                R.id.bari11 -> 11
-                R.id.bari12 -> 12
-                R.id.bari13 -> 13
-                R.id.bari14 -> 14
-                R.id.bari15 -> 15
+                R.id.bari1 -> 16
+                R.id.bari2 -> 17
+                R.id.bari3 -> 18
+                R.id.bari4 -> 19
+                R.id.bari5 -> 20
+                R.id.bari6 -> 21
+                R.id.bari7 -> 22
+                R.id.bari8 -> 23
+                R.id.bari9 -> 24
+                R.id.bari10 -> 25
+                R.id.bari11 -> 26
+                R.id.bari12 -> 27
+                R.id.bari13 -> 28
+                R.id.bari14 -> 29
+                R.id.bari15 -> 30
                 else -> 0
             }
             val intent = Intent(this, LearnActivity::class.java)
