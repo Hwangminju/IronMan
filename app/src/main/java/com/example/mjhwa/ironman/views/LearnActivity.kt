@@ -13,63 +13,62 @@ import android.os.Message
 import android.speech.SpeechRecognizer
 import android.util.Log
 import android.Manifest;
+import android.R.attr.bottom
 import android.content.Intent
 
 import com.example.mjhwa.ironman.R
 import com.example.mjhwa.ironman.bluetooth.BluetoothManager
 import kotlinx.android.synthetic.main.activity_learn_left.*
 import kotlinx.android.synthetic.main.activity_learn_right.*
-import java.net.HttpURLConnection
-import java.net.URL
 import java.nio.charset.Charset
 import android.widget.*
+import com.example.mjhwa.ironman.EMGData
 import com.example.mjhwa.ironman.R.layout.activity_learn_left
 import com.example.mjhwa.ironman.R.layout.activity_learn_right
-import com.example.mjhwa.ironman.bluetooth.ConnectionInfo
-import com.google.firebase.database.ThrowOnExtraProperties
-import com.opencsv.CSVReader
-import kotlinx.android.synthetic.main.activity_learn_left.*
-import kotlinx.android.synthetic.main.activity_learn_right.*
-import org.w3c.dom.Text
 import java.io.*
 import java.util.*
+import kotlin.collections.ArrayList
+import android.R.attr.x
+import android.annotation.SuppressLint
+import java.lang.Exception
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.concurrent.timer
+import kotlin.concurrent.timerTask
+
 
 class LearnActivity : AppCompatActivity() {
 
     private val mBtHandler = BluetoothHandler()
     private val mBluetoothManager: BluetoothManager = BluetoothManager.getInstance()
     private var mPrevUpdateTime = 0L
-    internal var isConnectionError = false
 
     private val TAG = "phptest"
     private val TAG_BT = "BluetoothClient"
     private val ON_TAG = "LearnActivity"
-    private var mConversationArrayAdapter: ArrayAdapter<String>? = null
 
-    private val timer: Timer? = null
+    private var timer: Timer? = null
     private var mToolbar: Toolbar? = null
-    private lateinit var deviceName: String
 
     init {
         Manifest.permission.RECORD_AUDIO
     }
-    private val MY_PERMISSIONS_RECORD_AUDIO: kotlin.Int? = 1
 
     var id : String? = null
     var lr : String? = null
     var num : Int? = 0
 
+    private var time = 0
+    private var timerTask: Timer? = null
+
+    private var emgData = ArrayList<EMGData>()
+
     var text: String? = null // 음성 인식 텍스트
 
-    internal val uploadFilePath = "/data/data/com.example.mjhwa.ironman/databases/"
-    internal val uploadFileName = "data.txt" // 전송하고자 하는 파일 이름
     internal var i: Intent? = null
-    internal var mRecognizer: SpeechRecognizer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // deviceName = ConnectionInfo.getName()
 
         mBluetoothManager.setHandler(mBtHandler)
 
@@ -92,6 +91,7 @@ class LearnActivity : AppCompatActivity() {
     fun run_left(): Boolean {
 
         tv_voice_left.setText("10초 동안 그림 속 손동작을 유지해 주세요.")
+        tv_emg_left.setText("\n\nEMG 데이터가 이곳에 입력됩니다.")
 
         btn_learning_left.visibility = View.GONE
         mToolbar = findViewById<View>(R.id.toolbar_left) as Toolbar // 상단 틀바
@@ -108,30 +108,22 @@ class LearnActivity : AppCompatActivity() {
         num = intent.getIntExtra("NO",0)
 
         btn_start_left.setOnClickListener {
+
             btn_start_left.visibility = View.GONE // start 버튼은 없어지고
             btn_learning_left.visibility = View.VISIBLE
             vf.isEnabled = true
+
             vf.startFlipping()
+            tv_emg_left.setText("")
 
             try {
                 val sendMessage = "start"
                 if (sendMessage.length > 0) {
                     mBluetoothManager.write(sendMessage.toByteArray())
-
-                    when (num) {
-                        1 -> parsing_data_left("gesture1.csv")
-                        2 -> parsing_data_left("gesture2.csv")
-                        3 -> parsing_data_left("gesture3.csv")
-                        4 -> parsing_data_left("gesture4.csv")
-                        5 -> parsing_data_left("gesture5.csv")
-                    }
                 }
             } catch (e: IOException) {
                 Log.e(TAG, "Message cannot be sent", e);
             }
-
-            val displayedChild = vf.displayedChild
-            val childCount = vf.childCount
 
             Handler().postDelayed({
                 vf.stopFlipping()
@@ -139,9 +131,9 @@ class LearnActivity : AppCompatActivity() {
                 vf.isEnabled = false
                 btn_learning_left.visibility = View.GONE
                 btn_start_left.visibility = View.VISIBLE
-
             },10000)
 
+            ParseTask().execute()
         }
 
         when (num) {
@@ -272,36 +264,134 @@ class LearnActivity : AppCompatActivity() {
         return true
     }
 
-    fun parsing_data_left(file_name: String) {
-        var fileReader: BufferedReader? = null
-        var csvReader: CSVReader? = null
+    inner class ParseTask : AsyncTask<Void, Void, String>() {
+        override fun doInBackground(vararg params: Void?): String? {
+            // ...
+            tv_emg_left.setText("\n\nEMG 데이터 수집 중입니다.")
 
-        try {
-            fileReader = BufferedReader(FileReader(file_name))
-            csvReader = CSVReader(fileReader)
+            val res = getResources()
 
-            var nextLine:Array<String>?
-            csvReader.readNext()
+            val ges1 = res.openRawResource(R.raw.gesture1) // 1번 제스처 csv 파일
+            val ges2 = res.openRawResource(R.raw.gesture2) // 2번 제스처 csv 파일
+            val ges3 = res.openRawResource(R.raw.gesture3) // 3번 제스처 csv 파일
+            val ges4 = res.openRawResource(R.raw.gesture4) // 4번 제스처 csv 파일
+            val ges5 = res.openRawResource(R.raw.gesture5) // 5번 제스처 csv 파일
 
-            nextLine = csvReader.readNext()
+            var reader: BufferedReader? = null
+            var gesNum: Int? = null
 
-            while (nextLine != null)
-            {
-                tv_emg_left.append(nextLine[0] +
-                        " | " + nextLine[1] + " | " + nextLine[2] + "\n")
-                nextLine = csvReader.readNext()
+            when (num) {
+                // normal 1~5
+                1 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
+                2 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
+                3 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
+                4 -> reader = BufferedReader(InputStreamReader(ges4, Charset.forName("UTF-8")))
+                5 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+                // barista 1~5
+                16 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
+                17 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
+                18 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
+                19 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+                20 -> reader = BufferedReader(InputStreamReader(ges4, Charset.forName("UTF-8")))
             }
 
-            csvReader.close()
+            var line : String?
+            var emgList : String? = ""
+            reader!!.readLine() // [﻿A, B, C]
 
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
+            line = reader.readLine()
+            // update ui here
+            while (line != null) {
+
+                var tokens: List<String>
+                tokens = line.split(",")
+                Log.d("line is what", tokens.toString())
+
+                // tv_emg_left.append(tokens[0] + " | " + tokens[1] + " | " + tokens[2] + "\n")
+                emgList += (tokens[0] + " | " + tokens[1] + " | " + tokens[2] + "\n")
+
+                line = reader.readLine()
+            }
+            return emgList
+        }
+
+        override fun onPostExecute(emgList: String?) {
+            Handler().postDelayed({
+                tv_emg_left.append(emgList)
+                sv_emg_left.post {
+                    sv_emg_left.fullScroll(View.FOCUS_DOWN) // 스크롤 맨 밑으로
+                }
+                Toast.makeText(applicationContext, "EMG 데이터 수집 완료!", Toast.LENGTH_LONG).show()
+            },9000)
+
         }
     }
+
+    fun parsing_data_left() {
+
+        sv_emg_left.setSmoothScrollingEnabled(true)
+        sv_emg_left.smoothScrollTo(0, tv_emg_left.getBaseline())
+
+        tv_emg_left.setText("")
+
+        val res = getResources()
+
+        val ges1 = res.openRawResource(R.raw.gesture1) // 1번 제스처 csv 파일
+        val ges2 = res.openRawResource(R.raw.gesture2) // 2번 제스처 csv 파일
+        val ges3 = res.openRawResource(R.raw.gesture3) // 3번 제스처 csv 파일
+        val ges4 = res.openRawResource(R.raw.gesture4) // 4번 제스처 csv 파일
+        val ges5 = res.openRawResource(R.raw.gesture5) // 5번 제스처 csv 파일
+
+        var reader: BufferedReader? = null
+        var gesNum: Int? = null
+
+        when (num) {
+            // normal 1~5
+            1 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
+            2 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
+            3 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
+            4 -> reader = BufferedReader(InputStreamReader(ges4, Charset.forName("UTF-8")))
+            5 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+            // barista 1~5
+            16 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
+            17 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
+            18 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
+            19 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+            20 -> reader = BufferedReader(InputStreamReader(ges4, Charset.forName("UTF-8")))
+        }
+
+        // txt 출력 반복 시작
+
+        runOnUiThread { // runOnUiThread를 사용하지 않으면 Main Thread에서 UI 변경 불가
+            var line:String?
+            reader!!.readLine() // [﻿A, B, C]
+
+            line = reader.readLine()
+            // update ui here
+            while (line != null) {
+                var tokens: List<String>
+                tokens = line.split(",")
+                Log.d("line is what", tokens.toString())
+
+                tv_emg_left.append(tokens[0] + " | " + tokens[1] + " | " + tokens[2] + "\n")
+
+                sv_emg_left.post {
+                    sv_emg_left.fullScroll(View.FOCUS_DOWN) // 스크롤 맨 밑으로
+                }
+
+                line = reader.readLine()
+
+            }
+        }
+
+
+    }
+
 
     fun run_right(): Boolean {
 
         tv_voice_right.setText("10초 동안 그림 속 손동작을 유지해 주세요.")
+        tv_emg_right.setText("\n\nEMG 데이터가 이곳에 입력됩니다.")
 
         btn_learning_right.visibility = View.GONE
         mToolbar = findViewById<View>(R.id.toolbar_right) as Toolbar // 상단 틀바
@@ -324,19 +414,12 @@ class LearnActivity : AppCompatActivity() {
             vf.isEnabled = true
             vf.visibility = View.VISIBLE // timer는 나타내기
             vf.startFlipping()
+            tv_emg_right.setText("")
 
             try {
                 val sendMessage = "start"
                 if (sendMessage.length > 0) {
                     mBluetoothManager.write(sendMessage.toByteArray())
-
-                    when (num) {
-                        1 -> parsing_data_right("gesture1.csv")
-                        2 -> parsing_data_right("gesture2.csv")
-                        3 -> parsing_data_right("gesture3.csv")
-                        4 -> parsing_data_right("gesture4.csv")
-                        5 -> parsing_data_right("gesture5.csv")
-                    }
                 }
             } catch (e: IOException) {
                 Log.e(TAG, "Message cannot be sent", e);
@@ -355,6 +438,7 @@ class LearnActivity : AppCompatActivity() {
 
             },10000)
 
+            ParserTask().execute()
         }
 
         when (num) {
@@ -400,83 +484,83 @@ class LearnActivity : AppCompatActivity() {
                 name_right.setText(R.string.opt10)
             }
             11 -> {
-                pic_left.setImageResource(R.drawable.norm11)
+                pic_right.setImageResource(R.drawable.norm11)
                 name_right.setText(R.string.opt11)
             }
             12 -> {
-                pic_left.setImageResource(R.drawable.norm12)
+                pic_right.setImageResource(R.drawable.norm12)
                 name_right.setText(R.string.opt12)
             }
             13 -> {
-                pic_left.setImageResource(R.drawable.norm13)
+                pic_right.setImageResource(R.drawable.norm13)
                 name_right.setText(R.string.opt13)
             }
             14 -> {
-                pic_left.setImageResource(R.drawable.norm14)
+                pic_right.setImageResource(R.drawable.norm14)
                 name_right.setText(R.string.opt14)
             }
             15 -> {
-                pic_left.setImageResource(R.drawable.norm15)
+                pic_right.setImageResource(R.drawable.norm15)
                 name_right.setText(R.string.opt15)
             }
             16 -> {
-                pic_left.setImageResource(R.drawable.bari1)
+                pic_right.setImageResource(R.drawable.bari1)
                 name_right.setText(R.string.b_opt1)
             }
             17 -> {
-                pic_left.setImageResource(R.drawable.bari2)
+                pic_right.setImageResource(R.drawable.bari2)
                 name_right.setText(R.string.b_opt2)
             }
             18 -> {
-                pic_left.setImageResource(R.drawable.bari3)
+                pic_right.setImageResource(R.drawable.bari3)
                 name_right.setText(R.string.b_opt3)
             }
             19 -> {
-                pic_left.setImageResource(R.drawable.bari4)
+                pic_right.setImageResource(R.drawable.bari4)
                 name_right.setText(R.string.b_opt4)
             }
             20 -> {
-                pic_left.setImageResource(R.drawable.bari5)
+                pic_right.setImageResource(R.drawable.bari5)
                 name_right.setText(R.string.b_opt5)
             }
             21 -> {
-                pic_left.setImageResource(R.drawable.bari6)
+                pic_right.setImageResource(R.drawable.bari6)
                 name_right.setText(R.string.b_opt6)
             }
             22 -> {
-                pic_left.setImageResource(R.drawable.bari7)
+                pic_right.setImageResource(R.drawable.bari7)
                 name_right.setText(R.string.b_opt7)
             }
             23 -> {
-                pic_left.setImageResource(R.drawable.bari8)
+                pic_right.setImageResource(R.drawable.bari8)
                 name_right.setText(R.string.b_opt8)
             }
             24 -> {
-                pic_left.setImageResource(R.drawable.bari9)
+                pic_right.setImageResource(R.drawable.bari9)
                 name_right.setText(R.string.b_opt9)
             }
             25 -> {
-                pic_left.setImageResource(R.drawable.bari10)
+                pic_right.setImageResource(R.drawable.bari10)
                 name_right.setText(R.string.b_opt10)
             }
             26 -> {
-                pic_left.setImageResource(R.drawable.bari11)
+                pic_right.setImageResource(R.drawable.bari11)
                 name_right.setText(R.string.b_opt11)
             }
             27 -> {
-                pic_left.setImageResource(R.drawable.bari12)
+                pic_right.setImageResource(R.drawable.bari12)
                 name_right.setText(R.string.b_opt12)
             }
             28 -> {
-                pic_left.setImageResource(R.drawable.bari13)
+                pic_right.setImageResource(R.drawable.bari13)
                 name_right.setText(R.string.b_opt13)
             }
             29 -> {
-                pic_left.setImageResource(R.drawable.bari14)
+                pic_right.setImageResource(R.drawable.bari14)
                 name_right.setText(R.string.b_opt14)
             }
             30 -> {
-                pic_left.setImageResource(R.drawable.bari15)
+                pic_right.setImageResource(R.drawable.bari15)
                 name_right.setText(R.string.b_opt15)
             }
             else -> {
@@ -485,31 +569,127 @@ class LearnActivity : AppCompatActivity() {
         return true
     }
 
-    fun parsing_data_right(file_name: String) {
-        var fileReader: BufferedReader? = null
-        var csvReader: CSVReader? = null
+    inner class ParserTask : AsyncTask<Void, Void, String>() {
+        override fun doInBackground(vararg params: Void?): String? {
+            // ...
+            tv_emg_right.setText("\n\nEMG 데이터 수집 중입니다.")
 
-        try {
-            fileReader = BufferedReader(FileReader(file_name))
-            csvReader = CSVReader(fileReader)
+            val res = getResources()
 
-            var nextLine:Array<String>?
-            csvReader.readNext()
+            val ges1 = res.openRawResource(R.raw.gesture1) // 1번 제스처 csv 파일
+            val ges2 = res.openRawResource(R.raw.gesture2) // 2번 제스처 csv 파일
+            val ges3 = res.openRawResource(R.raw.gesture3) // 3번 제스처 csv 파일
+            val ges4 = res.openRawResource(R.raw.gesture4) // 4번 제스처 csv 파일
+            val ges5 = res.openRawResource(R.raw.gesture5) // 5번 제스처 csv 파일
 
-            nextLine = csvReader.readNext()
+            var reader: BufferedReader? = null
+            var gesNum: Int? = null
 
-            while (nextLine != null)
-            {
-                tv_emg_right.append(nextLine[0] +
-                        " | " + nextLine[1] + " | " + nextLine[2] + "\n")
-                nextLine = csvReader.readNext()
+            when (num) {
+                // normal 1~5
+                1 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
+                2 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
+                3 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
+                4 -> reader = BufferedReader(InputStreamReader(ges4, Charset.forName("UTF-8")))
+                5 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+                // barista 1~5
+                16 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
+                17 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
+                18 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
+                19 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+                20 -> reader = BufferedReader(InputStreamReader(ges4, Charset.forName("UTF-8")))
             }
 
-            csvReader.close()
+            var line : String?
+            var emgList : String? = ""
+            reader!!.readLine() // [﻿A, B, C]
 
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
+            line = reader.readLine()
+            // update ui here
+            while (line != null) {
+
+                var tokens: List<String>
+                tokens = line.split(",")
+                Log.d("line is what", tokens.toString())
+
+                // tv_emg_right.append(tokens[0] + " | " + tokens[1] + " | " + tokens[2] + "\n")
+                emgList += (tokens[0] + " | " + tokens[1] + " | " + tokens[2] + "\n")
+
+                line = reader.readLine()
+            }
+            return emgList
         }
+
+        override fun onPostExecute(emgList: String?) {
+            Handler().postDelayed({
+                tv_emg_right.append(emgList)
+                sv_emg_right.post {
+                    sv_emg_right.fullScroll(View.FOCUS_DOWN) // 스크롤 맨 밑으로
+                }
+                Toast.makeText(applicationContext, "EMG 데이터 수집 완료!", Toast.LENGTH_LONG).show()
+            },9000)
+
+        }
+    }
+
+    fun parsing_data_right() {
+
+        sv_emg_right.setSmoothScrollingEnabled(true)
+        sv_emg_right.smoothScrollTo(0, tv_emg_right.getBaseline())
+
+        tv_emg_right.setText("")
+
+        val res = getResources()
+
+        val ges1 = res.openRawResource(R.raw.gesture1) // 1번 제스처 csv 파일
+        val ges2 = res.openRawResource(R.raw.gesture2) // 2번 제스처 csv 파일
+        val ges3 = res.openRawResource(R.raw.gesture3) // 3번 제스처 csv 파일
+        val ges4 = res.openRawResource(R.raw.gesture4) // 4번 제스처 csv 파일
+        val ges5 = res.openRawResource(R.raw.gesture5) // 5번 제스처 csv 파일
+
+        var reader: BufferedReader? = null
+        var gesNum: Int? = null
+
+        when (num) {
+            1 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
+            2 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
+            3 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
+            4 -> reader = BufferedReader(InputStreamReader(ges4, Charset.forName("UTF-8")))
+            5 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+            // barista 1~5
+            16 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
+            17 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
+            18 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
+            19 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+            20 -> reader = BufferedReader(InputStreamReader(ges4, Charset.forName("UTF-8")))
+        }
+
+        // txt 출력 반복 시작
+
+        timerTask = timer(period = 100) {
+
+            runOnUiThread { // runOnUiThread를 사용하지 않으면 Main Thread에서 UI 변경 불가
+                var line:String?
+                reader!!.readLine() // [﻿A, B, C]
+
+                line = reader.readLine()
+                // update ui here
+                while (line != null) {
+                    var tokens: List<String>
+                    tokens = line.split(",")
+                    Log.d("line is what", tokens.toString())
+
+                    tv_emg_right.append(tokens[0] + " | " + tokens[1] + " | " + tokens[2] + "\n")
+
+                    sv_emg_right.post {
+                        sv_emg_right.fullScroll(View.FOCUS_DOWN) // 스크롤 맨 밑으로
+                    }
+
+                    line = reader.readLine()
+                }
+            }
+        }
+
     }
 
     inner class BluetoothHandler : Handler() { // emg 값 수신
@@ -535,16 +715,6 @@ class LearnActivity : AppCompatActivity() {
 
                             st = (msg.obj as ByteArray).toString()
                             var emg_list = st.split(" ")
-
-                            /*
-                            try {
-                                val lDB = InsertDB()
-                                lDB.execute("http://ec2-18-224-155-219.us-east-2.compute.amazonaws.com/login.php",
-                                        emg_list[0], emg_list[1], emg_list[2], num.toString(), id)
-                            } catch (e: NullPointerException) {
-                                Log.e("err", e.message)
-                            }
-                            */
 
                         } else if (lr == "right") {
                             val currentTime = System.currentTimeMillis()
@@ -577,91 +747,6 @@ class LearnActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    inner class InsertDB : AsyncTask<Any, Int, String>() {
-
-        internal var errorString: String? = null
-
-        override fun doInBackground(vararg params: Any): String? {
-
-            val serverURL = params[0]
-            val postParameters = "emg1=" + params[1] + "&emg2=" + params[2] +
-                    "&emg3=" + params[3] + "&gesture=" + params[4] + "&u_id=" + params[5] + ""
-
-            try {
-                val url = URL(serverURL.toString())
-                val conn = url.openConnection() as HttpURLConnection
-
-                conn.readTimeout = 5000
-                conn.connectTimeout = 5000
-                conn.setRequestProperty("Content-Type", "application/x-w ww-form-urlencoded")
-                conn.requestMethod = "POST"
-                conn.doInput = true
-                conn.doOutput = true
-                conn.connect()
-
-                /* 안드로이드 -> 서버 파라메터값 전달 */
-                val outputStream = conn.outputStream
-                outputStream.write(postParameters.toByteArray(charset("UTF-8")))
-                outputStream.flush()
-                outputStream.close()
-
-                val responseStatusCode = conn.responseCode
-                Log.d(TAG, "response code - $responseStatusCode")
-
-                val inputStream: InputStream
-                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.inputStream
-                } else {
-                    inputStream = conn.errorStream
-                }
-                /* 서버 -> 안드로이드 파라메터값 전달 */
-                val inputStreamReader = InputStreamReader(inputStream, "UTF-8")
-                val bufferedReader = BufferedReader(inputStreamReader)
-
-                val sb = StringBuilder()
-                var line: String
-
-                while (bufferedReader.readLine() != null) {
-                    sb.append(bufferedReader.readLine())
-                }
-
-                bufferedReader.close()
-                val data = sb.toString().trim { it <= ' ' }
-
-                if (data == "1") {
-                    Log.e("RESULT", "성공적으로 처리되었습니다!")
-                } else {
-                    Log.e("RESULT", "에러 발생! ERRCODE = $data")
-                }
-
-                return data
-
-            } catch (e: Exception) {
-                Log.d(TAG, "GetData : Error ", e);
-                errorString = e.toString();
-
-                return null
-            }
-
-        }
-
-        override fun onPostExecute(data: String?) {
-            super.onPostExecute(data)
-            this@LearnActivity
-
-            /* 서버에서 응답 */
-            Log.e("RECV DATA", data)
-
-            if (data == "1") {
-                Log.e("RESULT", "성공적으로 처리되었습니다!")
-            } else {
-                Log.e("RESULT", "에러 발생! ERRCODE = $data")
-            }
-
-        }
-
     }
 
     override fun onStart() {

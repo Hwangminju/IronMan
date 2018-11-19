@@ -56,7 +56,6 @@ class NormalActivity : Activity() {
             val intent = Intent(this, LearnActivity::class.java)
             mBluetoothManager.write(no.toString().toByteArray())
             intent.putExtra("LR", sLR)
-            Toast.makeText(this,"LR is " + sLR, Toast.LENGTH_LONG).show()
             intent.putExtra("NO", no)
             startActivity(intent)
         }

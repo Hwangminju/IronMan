@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">IronMan</string>
+    <string name="app_name">IronMan + @</string>
     <string name="service_name">BLE Service</string>
+
+    <string name="start_name"><font size="30" style="bold">SW Maestro 9기\n</font>
+        <font size="20">Baek Dong Won, Hwang Min Ju</font></string>
 
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_data">Data:</string>
