@@ -278,15 +278,18 @@ class LearnActivity : AppCompatActivity() {
             val ges5 = res.openRawResource(R.raw.gesture5) // 5번 제스처 csv 파일
 
             var reader: BufferedReader? = null
-            var gesNum: Int? = null
+            var gesNum: Int? = num!! % 5
 
-            when (num) {
+            when (gesNum) {
                 // normal 1~5
+                0 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+
                 1 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
                 2 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
                 3 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
                 4 -> reader = BufferedReader(InputStreamReader(ges4, Charset.forName("UTF-8")))
                 5 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+
                 // barista 1~5
                 16 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
                 17 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
@@ -583,10 +586,12 @@ class LearnActivity : AppCompatActivity() {
             val ges5 = res.openRawResource(R.raw.gesture5) // 5번 제스처 csv 파일
 
             var reader: BufferedReader? = null
-            var gesNum: Int? = null
+            var gesNum: Int? = num!! % 5
 
-            when (num) {
+            when (gesNum) {
                 // normal 1~5
+                0 -> reader = BufferedReader(InputStreamReader(ges5, Charset.forName("UTF-8")))
+
                 1 -> reader = BufferedReader(InputStreamReader(ges1, Charset.forName("UTF-8")))
                 2 -> reader = BufferedReader(InputStreamReader(ges2, Charset.forName("UTF-8")))
                 3 -> reader = BufferedReader(InputStreamReader(ges3, Charset.forName("UTF-8")))
